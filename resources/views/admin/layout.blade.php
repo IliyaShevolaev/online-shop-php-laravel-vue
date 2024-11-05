@@ -22,13 +22,11 @@
                     <a class="nav-link text-white" href="#"><i class="bi bi-book-fill"></i> Products</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-white" href="#"><i class="bi bi-justify"></i> Categories</a>
+                    <a class="nav-link text-white" href="{{ route('categories.index') }}"><i class="bi bi-justify"></i>
+                        Categories</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-white" href="#"><i class="bi bi-tags-fill"></i> Tags</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-white" href="#"><i class="bi bi-palette-fill"></i> Colors</a>
+                    <a class="nav-link text-white" href="#"><i class="bi bi-vector-pen"></i></i> Genres</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link text-white" href="#"><i class="bi bi-people-fill"></i> Customers</a>
