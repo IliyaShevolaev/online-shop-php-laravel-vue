@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\CategoryRequest;
+use App\Http\Requests\GenreRequest;
 use App\Models\Category;
-use Illuminate\Http\Request;
+use App\Models\Genre;
 
 class CategoryController extends Controller
 {
@@ -20,13 +20,13 @@ class CategoryController extends Controller
         return view('admin.categories.create');
     }
 
-    public function store(CategoryRequest $categoryRequest) 
+    public function store(GenreRequest $genreRequest) 
     {
-        $data = $categoryRequest->validated();
+        $data = $genreRequest->validated();
 
-        Category::firstOrCreate($data); 
+        Genre::firstOrCreate($data); 
 
-        return redirect()->route('categories.index');
+        return redirect()->route('genres.index');
     }
 
     public function show(Category $category)
@@ -39,7 +39,7 @@ class CategoryController extends Controller
         return view('admin.categories.edit', compact('category'));
     } 
 
-    public function update(CategoryRequest $categoryRequest, Category $category)
+    public function update(GenreRequest $categoryRequest, Category $category)
     {
         $data = $categoryRequest->validated();
 
