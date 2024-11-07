@@ -26,10 +26,12 @@
                         Categories</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-white" href="{{ route('genres.index') }}"><i class="bi bi-vector-pen"></i></i> Genres</a>
+                    <a class="nav-link text-white" href="{{ route('genres.index') }}"><i
+                            class="bi bi-vector-pen"></i></i> Genres</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-white" href="#"><i class="bi bi-people-fill"></i> Customers</a>
+                    <a class="nav-link text-white" href="{{ route('users.index') }}"><i class="bi bi-people-fill"></i>
+                        Customers</a>
                 </li>
             </ul>
         </div>

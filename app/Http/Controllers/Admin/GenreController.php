@@ -3,20 +3,20 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\Genre;
-use App\Http\Requests\GenreRequest;
+use App\Http\Requests\Admin\GenreRequest;
 use App\Http\Controllers\Controller;
 
 class GenreController extends Controller
 {
     public function index()
     {
-        $genres = Genre::all();
-        return view('admin.genres.index', compact('genres'));
+        $genres = Genre::orderBy('id')->get();
+        return view('admin.genre.index', compact('genres'));
     }
 
     public function create()
     {
-        return view('admin.genres.create');
+        return view('admin.genre.create');
     }
 
     public function store(GenreRequest $genreRequest) 
@@ -30,21 +30,21 @@ class GenreController extends Controller
 
     public function show(Genre $genre)
     {
-        return view('admin.genres.show', compact('genre'));
+        return view('admin.genre.show', compact('genre'));
     }
 
     public function edit(Genre $genre)
     {
-        return view('admin.genres.edit', compact('genre'));
+        return view('admin.genre.edit', compact('genre'));
     } 
 
-    public function update(genreRequest $genreRequest, Genre $genre)
+    public function update(GenreRequest $genreRequest, Genre $genre)
     {
         $data = $genreRequest->validated();
 
         $genre->update($data);
 
-        return view('admin.genres.show', compact('genre'));
+        return view('admin.genre.show', compact('genre'));
     }
 
     public function delete(Genre $genre)
