@@ -17,16 +17,25 @@
                 placeholder="Enter price">
 
             <label for="products_count" class="mt-3">Products Count</label>
-            <input name="products_count" value="{{ old('products_count') }}" type="number" class="form-control" id="products_count"
-                placeholder="Enter products count">
+            <input name="products_count" value="{{ old('products_count') }}" type="number" class="form-control"
+                id="products_count" placeholder="Enter products count">
 
             <label for="category_id" class="mt-3">Category</label>
             <select name="category_id" class="form-control" id="category_id">
                 <option value="" disabled selected>Select category</option>
-                @foreach($categories as $category)
+                @foreach ($categories as $category)
                     <option value="{{ $category->id }}" {{ old('category_id') == $category->id ? 'selected' : '' }}>
                         {{ $category->title }}
                     </option>
+                @endforeach
+            </select>
+
+            <label for="genres_id" class="mt-3">Genres</label>
+            <select name="genres_id[]" class="form-select" multiple aria-label="multiple select example">
+                @foreach ($genres as $genre)
+                <option value="{{ $genre->id }}" {{ (is_array(old('genres_id')) && in_array($genre->id, old('genres_id'))) ? 'selected' : '' }}>
+                    {{ $genre->title }}
+                </option>
                 @endforeach
             </select>
 

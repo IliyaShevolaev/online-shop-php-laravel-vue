@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\Genre;
+use App\Models\Product;
+use App\Models\Category;
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\ProductRequest;
-use App\Models\Category;
-use App\Models\Product;
-use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
@@ -20,15 +21,21 @@ class ProductController extends Controller
     public function create()
     {
         $categories = Category::all();
+        $genres = Genre::all();
 
-        return view('admin.product.create', compact('categories'));
+        return view('admin.product.create', compact('categories', 'genres'));
     }
 
     public function store(ProductRequest $productRequest) 
     {
         $data = $productRequest->validated();
 
-        Product::create($data);
+        $genresIdArray = $data['genres_id'];
+        unset($data['genres_id']);
+
+        $product = Product::create($data);
+        $product->genres()->attach($genresIdArray);
+        $product->save();
 
         return redirect()->route('products.index');
     } 
