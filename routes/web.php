@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\GenreController;
+use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\CategoryController;
 
 Route::get('/', function () {
@@ -11,7 +12,17 @@ Route::get('/', function () {
 });
 
 Route::group(['prefix' => 'admin'], function () {
-    Route::get('/index', [AdminController::class, 'index']);
+    Route::get('/index', [AdminController::class, 'index'])->name('admin.index');
+
+    Route::group(['prefix' => 'product'], function () {
+        Route::get('/index', [ProductController::class, 'index'])->name('products.index');
+        Route::get('/create', [ProductController::class, 'create'])->name('products.create');
+        Route::post('/store', [ProductController::class, 'store'])->name('products.store');
+        Route::get('/show/{product}', [ProductController::class, 'show'])->name('products.show');
+        Route::get('/{product}/edit', [ProductController::class, 'edit'])->name('products.edit');
+        Route::patch('/{product}', [ProductController::class, 'update'])->name('products.update');
+        Route::delete('/{product}', [ProductController::class, 'delete'])->name('products.delete');
+    });
 
     Route::group(['prefix' => 'categories'], function () {
         Route::get('/index', [CategoryController::class, 'index'])->name('categories.index');

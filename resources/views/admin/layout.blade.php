@@ -13,13 +13,13 @@
     {{-- Sidebar --}}
     <div class="d-flex">
         <div class="d-flex flex-column vh-100 p-3 text-white sidebar-bg" style="width: 190px; background-color: #282d33;">
-            <h4 class="fs-4">SmartMart</h4>
+            <h4 class="fs-4"><a class="text-decoration-none text-light" href="{{route('admin.index')}}">SmartMart</a></h4>
             <ul class="nav flex-column fs-5">
                 <li class="nav-item">
                     <a class="nav-link text-white" href="#"><i class="bi bi-cart-fill"></i> Orders</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-white" href="#"><i class="bi bi-book-fill"></i> Products</a>
+                    <a class="nav-link text-white" href="{{route('products.index')}}"><i class="bi bi-book-fill"></i> Products</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link text-white" href="{{ route('categories.index') }}"><i class="bi bi-justify"></i>
