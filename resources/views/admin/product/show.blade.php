@@ -3,6 +3,10 @@
     <h2>Product Details</h2>
 
     <div class="card w-50">
+        @if ($product->image_path)
+            <img src="{{ asset('storage/' . $product->image_path) }}" alt="Product Image"
+                class="card-img-top img-fluid p-3 rounded" style="max-width: 400px; max-height: 400px; object-fit: cover;">
+        @endif
         <div class="card-body">
             <h5 class="card-title">ID: {{ $product->id }}</h5>
 
@@ -12,7 +16,7 @@
             <p><strong>Count:</strong> {{ $product->products_count }}</p>
             <p><strong>Category:</strong> {{ $product->category->title }} </p>
 
-            <p><strong>Genres: </strong> 
+            <p><strong>Genres: </strong>
                 @foreach ($product->genres as $genre)
                     {{ $genre->title }}
                 @endforeach

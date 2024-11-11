@@ -30,8 +30,17 @@ class ProductController extends Controller
     {
         $data = $productRequest->validated();
 
-        $genresIdArray = $data['genres_id'];
-        unset($data['genres_id']);
+        $genresIdArray = [];
+        if (isset($data['genres_id'])) {
+            $genresIdArray = $data['genres_id'];
+            unset($data['genres_id']);
+        }
+
+        if ($productRequest->hasFile('image')) {
+            $path = $productRequest->file('image')->store('uploads', 'public');
+            $data['image_path'] = $path;
+        }
+        unset($data['image']);
 
         $product = Product::create($data);
         $product->genres()->attach($genresIdArray);
@@ -47,16 +56,40 @@ class ProductController extends Controller
 
     public function edit(Product $product)
     {
+        $categories = Category::all();
+        $genres = Genre::all();
 
+        return view('admin.product.edit', compact('product', 'categories', 'genres'));
     } 
 
-    public function update(ProductRequest $productRequestRequest, Product $product)
+    public function update(ProductRequest $productRequest, Product $product)
     {
-        
+        $data = $productRequest->validated();
+
+        $genresIdArray = [];
+        if (isset($data['genres_id'])) {
+            $genresIdArray = $data['genres_id'];
+            unset($data['genres_id']);
+        }
+
+        if ($productRequest->hasFile('image')) {
+            $path = $productRequest->file('image')->store('uploads', 'public');
+            $data['image_path'] = $path;
+        }
+        unset($data['image']);
+
+        $product->update($data);
+
+        $product->genres()->detach();
+        $product->genres()->attach($genresIdArray);
+        $product->save();
+
+        return redirect()->route('products.index');
     }
 
     public function delete(Product $product)
     {
+        $product->genres()->detach();
         $product->delete();
         
         return redirect()->route('products.index');
