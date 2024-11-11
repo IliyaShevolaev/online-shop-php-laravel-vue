@@ -5,16 +5,23 @@ namespace App\Http\Controllers\Admin;
 use App\Models\Genre;
 use App\Models\Product;
 use App\Models\Category;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\ProductRequest;
+use App\Services\Admin\ProductService;
 
 class ProductController extends Controller
 {
+    protected $service;
+
+    public function __construct(ProductService $productService)
+    {
+        $this->service = $productService;
+    }
+
     public function index()
     {
         $products = Product::orderBy('id')->get();
-    
+
         return view('admin.product.index', compact('products'));
     }
 
@@ -26,28 +33,14 @@ class ProductController extends Controller
         return view('admin.product.create', compact('categories', 'genres'));
     }
 
-    public function store(ProductRequest $productRequest) 
+    public function store(ProductRequest $productRequest)
     {
         $data = $productRequest->validated();
 
-        $genresIdArray = [];
-        if (isset($data['genres_id'])) {
-            $genresIdArray = $data['genres_id'];
-            unset($data['genres_id']);
-        }
-
-        if ($productRequest->hasFile('image')) {
-            $path = $productRequest->file('image')->store('uploads', 'public');
-            $data['image_path'] = $path;
-        }
-        unset($data['image']);
-
-        $product = Product::create($data);
-        $product->genres()->attach($genresIdArray);
-        $product->save();
+        $this->service->store($data);
 
         return redirect()->route('products.index');
-    } 
+    }
 
     public function show(Product $product)
     {
@@ -60,39 +53,21 @@ class ProductController extends Controller
         $genres = Genre::all();
 
         return view('admin.product.edit', compact('product', 'categories', 'genres'));
-    } 
+    }
 
     public function update(ProductRequest $productRequest, Product $product)
     {
         $data = $productRequest->validated();
 
-        $genresIdArray = [];
-        if (isset($data['genres_id'])) {
-            $genresIdArray = $data['genres_id'];
-            unset($data['genres_id']);
-        }
-
-        if ($productRequest->hasFile('image')) {
-            $path = $productRequest->file('image')->store('uploads', 'public');
-            $data['image_path'] = $path;
-        }
-        unset($data['image']);
-
-        $product->update($data);
-
-        $product->genres()->detach();
-        $product->genres()->attach($genresIdArray);
-        $product->save();
+        $this->service->update($data, $product);
 
         return redirect()->route('products.index');
     }
 
     public function delete(Product $product)
     {
-        $product->genres()->detach();
-        $product->delete();
-        
+        $this->service->delete($product);
+
         return redirect()->route('products.index');
     }
 }
-
