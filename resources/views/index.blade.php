@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,9 +9,11 @@
 
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
 </head>
+
 <body>
-    welcome
-    <button type="button" class="btn btn-dark">Dark <i class="bi bi-7-square"></i></button>
-    
+    <div id="app">
+        <index></index>
+    </div>
 </body>
+
 </html>
