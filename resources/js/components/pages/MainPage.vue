@@ -1,13 +1,17 @@
 <template>
-    <div>
-        <h1>MAIN</h1>
-    </div>
+    <CardsList></CardsList>
 </template>
+
 <script>
+import CardsList from '../product/CardsList.vue';
+
 export default {
-    
-}
+    components: {
+        CardsList,
+    }
+};
 </script>
-<style>
-    
+
+<style scoped>
+
 </style>

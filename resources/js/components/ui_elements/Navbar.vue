@@ -2,7 +2,7 @@
     <div>
         <nav class="navbar navbar-expand-lg navbar-light fixed-top custom-navbar">
             <div class="container-fluid d-flex justify-content-between align-items-center">
-                <router-link to="/main" class="navbar-brand">
+                <router-link to="/" class="navbar-brand">
                     SmartMart
                 </router-link>
 
@@ -62,7 +62,7 @@ export default {
 }
 
 .content {
-    margin-top: 100px;
+    margin-top: 120px;
 }
 
 .custom-navbar {

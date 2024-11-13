@@ -1,0 +1,105 @@
+<template>
+    <div class="container mt-4 mb-4">
+        <div class="row gy-4">
+            <div v-for="product in products" class="col-md-3">
+                <div class="card h-100 shadow-sm" @click="goToProduct">
+                    <img :src="product.image_url" class="card-img-top" alt="Book Image" />
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">{{ product.title }}</h5>
+                        <p class="card-text text-muted">{{ product.description }}</p>
+                        <div class="mt-auto d-flex align-items-center">
+                            <button class="btn btn-primary btn-lg fw-bold flex-grow-1 me-2" @click.stop="goToCart">
+                                Buy
+                            </button>
+                            <button class="btn btn-outline-primary btn-icon" @click.stop="addToWishlist">
+                                <i class="bi bi-bookmark"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
+<script>
+import axios from 'axios';
+
+export default {
+    mounted() {
+        this.getProducts();
+        console.log(this.products);
+    },
+
+    methods: {
+        goToCart() {
+            console.log("cart");
+        },
+        goToProduct() {
+            console.log("product");
+        },
+        addToWishlist() {
+            console.log("wishlist");
+        },
+
+        getProducts() {
+            axios.get('/api/products/')
+                .then(res => {
+                    this.products = res.data.data;
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+        }
+    },
+
+    data() {
+        return {
+            products: [],
+        }
+    },
+};
+</script>
+
+<style scoped>
+.card {
+    transition: transform 0.2s;
+    height: 100%; 
+}
+
+.card:hover {
+    transform: scale(1.05);
+}
+
+.card-img-top {
+    height: 200px; 
+    object-fit: cover; 
+}
+
+.card-title {
+    font-size: 1.1rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+}
+
+.card-text {
+    max-height: 3em; 
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap; 
+}
+
+.btn-icon {
+    width: 40px; 
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    font-size: 1.2rem;
+}
+
+.btn-icon i {
+    font-size: 1.2rem; 
+}
+</style>

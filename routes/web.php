@@ -8,12 +8,8 @@ use App\Http\Controllers\Admin\GenreController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\CategoryController;
 
-Route::get('/', function () {
-    return view('index');
-});
-
 Route::group(['prefix' => 'admin'], function () {
-    Route::get('/index', [AdminController::class, 'index'])->name('admin.index');
+    Route::get('/', [AdminController::class, 'index'])->name('admin.index');
 
     Route::group(['prefix' => 'product'], function () {
         Route::get('/index', [ProductController::class, 'index'])->name('products.index');

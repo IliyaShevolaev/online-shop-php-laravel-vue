@@ -17,4 +17,9 @@ class Product extends Model
     {
         return $this->belongsToMany(Genre::class);
     }
+
+    public function getImageUrlAttribute()
+    {
+        return url('storage/' . $this->image_path);
+    }
 }
