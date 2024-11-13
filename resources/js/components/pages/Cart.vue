@@ -1,6 +1,6 @@
-<template >
+<template>
     <div>
-        <button>CLICK</button>
+        <h1>Cart</h1>
     </div>
 </template>
 <script>

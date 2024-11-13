@@ -1,17 +1,16 @@
 <template>
     <div>
-        <h1>Index</h1>
-        <router-link to="/shop">SHOP</router-link>
-        <router-view></router-view>
-        <PrimaryNew></PrimaryNew>
+        <Navbar></Navbar>
     </div>
 </template>
 <script>
-import PrimaryNew from './PrimaryNew.vue';
+import Profile from './pages/Profile.vue';
+import Navbar from './ui_elements/Navbar.vue';
 
 export default {
     components: {
-        PrimaryNew
+        Navbar,
+        Profile
     }, 
 
     data() {

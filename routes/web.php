@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\IndexController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\GenreController;
@@ -54,3 +55,5 @@ Route::group(['prefix' => 'admin'], function () {
         Route::delete('/{user}', [UserController::class, 'delete'])->name('users.delete');
     });
 });
+
+Route::get('/{page}', IndexController::class)->where('page', '.*');
