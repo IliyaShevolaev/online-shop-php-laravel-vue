@@ -22,6 +22,13 @@ const routes = [
         name: 'page.favorites',
         component: () => import('../components/pages/Favorites.vue'),
     },
+
+    {
+        path: '/product/show/:id',
+        name: 'product.show',
+        props: true,
+        component: () => import('../components/product/ShowCard.vue'),
+    },
 ];
 
 export default routes;

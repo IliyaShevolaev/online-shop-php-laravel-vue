@@ -10,4 +10,5 @@ Route::get('/user', function (Request $request) {
 
 Route::group(['prefix' => 'products'], function() {
     Route::get('/', [ProductsController::class, 'index']);
+    Route::get('/show/{product}', [ProductsController::class, 'show']);
 });

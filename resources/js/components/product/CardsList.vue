@@ -2,11 +2,12 @@
     <div class="container mt-4 mb-4">
         <div class="row gy-4">
             <div v-for="product in products" class="col-md-3">
-                <div class="card h-100 shadow-sm" @click="goToProduct">
+                <div class="card h-100 shadow-sm" @click="goToProduct(product.id)">
                     <img :src="product.image_url" class="card-img-top" alt="Book Image" />
                     <div class="card-body d-flex flex-column">
                         <h5 class="card-title">{{ product.title }}</h5>
                         <p class="card-text text-muted">{{ product.description }}</p>
+                        <p class="product-price">{{ product.price }} $</p>
                         <div class="mt-auto d-flex align-items-center">
                             <button class="btn btn-primary btn-lg fw-bold flex-grow-1 me-2" @click.stop="goToCart">
                                 Buy
@@ -28,15 +29,14 @@ import axios from 'axios';
 export default {
     mounted() {
         this.getProducts();
-        console.log(this.products);
     },
 
     methods: {
         goToCart() {
             console.log("cart");
         },
-        goToProduct() {
-            console.log("product");
+        goToProduct(id) {
+            this.$router.push(`/product/show/${id}`);
         },
         addToWishlist() {
             console.log("wishlist");
@@ -87,6 +87,12 @@ export default {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap; 
+}
+
+.product-price {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #0066cc;
 }
 
 .btn-icon {
