@@ -17,6 +17,10 @@
             <input name="price" value="{{ $product->price }}" type="number" class="form-control" id="price"
                 placeholder="Enter price">
 
+            <label for="old_price" class="mt-3">Old Price</label>
+            <input name="old_price" value="{{ old('old_price') }}" type="number" class="form-control" id="old_price"
+                placeholder="Enter old price">
+
             <label for="products_count" class="mt-3">Products Count</label>
             <input name="products_count" value="{{ $product->products_count }}" type="number" class="form-control"
                 id="products_count" placeholder="Enter products count">

@@ -7,7 +7,10 @@
                     <div class="card-body d-flex flex-column">
                         <h5 class="card-title">{{ product.title }}</h5>
                         <p class="card-text text-muted">{{ product.description }}</p>
-                        <p class="product-price">{{ product.price }} $</p>
+                        <p class="product-price">
+                            <span v-if="product.old_price" class="old-price">{{ product.old_price }} $</span>
+                            {{ product.price }} $
+                        </p>
                         <div class="mt-auto d-flex align-items-center">
                             <button class="btn btn-primary btn-lg fw-bold flex-grow-1 me-2" @click.stop="goToCart">
                                 Buy
@@ -64,7 +67,7 @@ export default {
 <style scoped>
 .card {
     transition: transform 0.2s;
-    height: 100%; 
+    height: 100%;
 }
 
 .card:hover {
@@ -72,8 +75,8 @@ export default {
 }
 
 .card-img-top {
-    height: 200px; 
-    object-fit: cover; 
+    height: 200px;
+    object-fit: cover;
 }
 
 .card-title {
@@ -83,20 +86,26 @@ export default {
 }
 
 .card-text {
-    max-height: 3em; 
+    max-height: 3em;
     overflow: hidden;
     text-overflow: ellipsis;
-    white-space: nowrap; 
+    white-space: nowrap;
 }
 
 .product-price {
-    font-size: 1.5rem;
+    font-size: 1.0rem;
     font-weight: 600;
     color: #0066cc;
 }
 
+.old-price {
+    color: red;
+    text-decoration: line-through;
+    margin-right: 10px;
+}
+
 .btn-icon {
-    width: 40px; 
+    width: 40px;
     height: 40px;
     display: flex;
     align-items: center;
@@ -106,6 +115,6 @@ export default {
 }
 
 .btn-icon i {
-    font-size: 1.2rem; 
+    font-size: 1.2rem;
 }
 </style>

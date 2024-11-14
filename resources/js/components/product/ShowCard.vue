@@ -8,7 +8,10 @@
 
                 <div class="col-md-6">
                     <h1 class="product-title">{{ product.title }}</h1>
-                    <p class="product-price">{{ product.price }} $</p>
+                    <p class="product-price">
+                        <span v-if="product.old_price" class="old-price">{{ product.old_price }} $</span>
+                        {{ product.price }} $
+                    </p>
                     <p class="product-description">{{ product.description }}</p>
 
                     <div class="mt-3">
@@ -36,7 +39,7 @@
 
     </div>
     <div v-else>
-        <p>Загрузка данных...</p>
+        <p>Loading...</p>
     </div>
 </template>
 
@@ -96,6 +99,12 @@ export default {
     font-size: 1.5rem;
     font-weight: 600;
     color: #0066cc;
+}
+
+.old-price {
+    color: red;
+    text-decoration: line-through;
+    margin-right: 10px;
 }
 
 .product-description {

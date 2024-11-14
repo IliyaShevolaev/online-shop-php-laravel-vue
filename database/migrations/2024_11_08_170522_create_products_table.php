@@ -18,6 +18,7 @@ return new class extends Migration
             $table->text('description');
             $table->string('image_path')->nullable();
             $table->integer('price');
+            $table->integer('old_price')->nullable();
             $table->integer('products_count');
 
             $table->foreignId('category_id')->constrained('categories');
