@@ -2,10 +2,13 @@
 
 namespace App\Models;
 
+use App\Models\Traits\Filterable;
 use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model
 {
+    use Filterable;
+
     protected $guarded = false;
 
     public function category()
