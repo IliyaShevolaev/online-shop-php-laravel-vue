@@ -97,10 +97,6 @@
                 </div>
             </div>
         </div>
-
-        <div class="content">
-            <router-view></router-view>
-        </div>
     </div>
 </template>
 
@@ -145,20 +141,23 @@ export default {
             }
 
             axios.post('/api/products/filter', {
-                'price': this.price,
-                'category_id': this.filters.category,
-                'genres': this.filters.genres,
-            }).then(res => {console.log(res)});
+                price: this.price,
+                category_id: this.filters.category,
+                genres: this.filters.genres,
+            }).then(res => {
+                this.$store.state.productsFromFilter = res.data.data;
+                this.$router.push({ name: 'product.filter' });
+            });
 
             this.closeFilters();
         },
 
         getFiltersList() {
             axios.get('/api/products/filter/list')
-            .then(res => {
-                this.categories = res.data.categories;
-                this.genres = res.data.genres;
-            });
+                .then(res => {
+                    this.categories = res.data.categories;
+                    this.genres = res.data.genres;
+                });
         }
     },
 
@@ -170,10 +169,6 @@ export default {
 .custom-navbar .navbar-brand:focus {
     outline: none;
     box-shadow: none;
-}
-
-.content {
-    margin-top: 120px;
 }
 
 .custom-navbar {

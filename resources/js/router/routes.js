@@ -29,6 +29,12 @@ const routes = [
         props: true,
         component: () => import('../components/product/ShowCard.vue'),
     },
+
+    {
+        path: '/product/filter',
+        name: 'product.filter',
+        component: () => import('../components/product/ShowFilterCards.vue'),
+    },
 ];
 
 export default routes;

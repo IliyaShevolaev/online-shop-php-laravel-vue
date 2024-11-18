@@ -9,4 +9,7 @@ app.component('index', indexComponent);
 import router from './router/router';
 app.use(router);
 
+import store from './store';
+app.use(store);
+
 app.mount('#app');

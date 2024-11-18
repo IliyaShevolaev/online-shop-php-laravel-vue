@@ -1,7 +1,7 @@
 <template>
     <div class="container mt-4 mb-4">
         <div class="row gy-4">
-            <div v-for="product in products" class="col-md-3">
+            <div v-for="product in products" :key="product.id" class="col-md-3">
                 <div class="card h-100 shadow-sm" @click="goToProduct(product.id)">
                     <img :src="product.image_url" class="card-img-top" alt="Book Image" />
                     <div class="card-body d-flex flex-column">
@@ -27,11 +27,29 @@
 </template>
 
 <script>
-import axios from 'axios';
-
 export default {
+    data() {
+        return {
+            products: [],
+        };
+    },
+
+    computed: {
+        productsFromStore() {
+            return this.$store.state.productsFromFilter;
+        },
+    },
+
+    watch: {
+        productsFromStore(newProducts) {
+            if (newProducts !== this.products) {
+                this.products = newProducts || [];
+            }
+        },
+    },
+
     mounted() {
-        this.getProducts();
+        this.products = this.$store.state.productsFromFilter || [];
     },
 
     methods: {
@@ -44,77 +62,6 @@ export default {
         addToWishlist() {
             console.log("wishlist");
         },
-
-        getProducts() {
-            axios.get('/api/products/')
-                .then(res => {
-                    this.products = res.data.data;
-                })
-                .catch(error => {
-                    console.error(error);
-                });
-        }
-    },
-
-    data() {
-        return {
-            products: [],
-        }
     },
 };
 </script>
-
-<style>
-.card {
-    transition: transform 0.2s;
-    height: 100%;
-}
-
-.card:hover {
-    transform: scale(1.05);
-}
-
-.card-img-top {
-    height: 200px;
-    object-fit: cover;
-}
-
-.card-title {
-    font-size: 1.1rem;
-    font-weight: bold;
-    margin-bottom: 0.5rem;
-}
-
-.card-text {
-    max-height: 3em;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
-
-.product-price {
-    font-size: 1.0rem;
-    font-weight: 600;
-    color: #0066cc;
-}
-
-.old-price {
-    color: red;
-    text-decoration: line-through;
-    margin-right: 10px;
-}
-
-.btn-icon {
-    width: 40px;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0;
-    font-size: 1.2rem;
-}
-
-.btn-icon i {
-    font-size: 1.2rem;
-}
-</style>
