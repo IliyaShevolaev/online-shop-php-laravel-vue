@@ -137,9 +137,7 @@ export default {
             this.showFilters = false;
         },
         applyFilters() {
-            console.log(this.filters);
-
-            if (this.priceMin !== null && this.priceMax !== null) {
+            if (this.priceMin !== null || this.priceMax !== null) {
                 this.price = {
                     from: this.priceMin,
                     to: this.priceMax,

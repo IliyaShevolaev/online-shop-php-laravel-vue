@@ -2,7 +2,6 @@
 
 namespace App\Http\Filters;
 
-use Illuminate\Support\Facades\Log;
 use App\Http\Filters\Base\AbstractFilter;
 use Illuminate\Database\Eloquent\Builder;
 
@@ -30,8 +29,17 @@ class ProductFilter extends AbstractFilter
 
     public function price(Builder $builder, $value)
     {
-        Log::info('PRICEHERE', $value);
-        $builder->whereBetween('price', [$value['from'], $value['to']]);
+        if ($value['from'] !== null) {
+            $builder->where('price', '>=', $value['from']);
+        }
+    
+        if ($value['to'] !== null) {
+            $builder->where('price', '<=', $value['to']);
+        }
+    
+        if ($value['from'] !== null && $value['to'] !== null) {
+            $builder->whereBetween('price', [$value['from'], $value['to']]);
+        }
     }
 
     public function category_id(Builder $builder, $value)
