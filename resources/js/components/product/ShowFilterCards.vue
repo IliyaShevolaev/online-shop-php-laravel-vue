@@ -35,16 +35,14 @@ export default {
     },
 
     computed: {
-        productsFromStore() {
-            return this.$store.state.productsFromFilter;
+        filterKeyFromStore() {
+            return this.$store.state.filterKey;
         },
     },
 
     watch: {
-        productsFromStore(newProducts) {
-            if (newProducts !== this.products) {
-                this.products = newProducts || [];
-            }
+        filterKeyFromStore() {
+            this.products = this.productsFromStore();
         },
     },
 
@@ -61,6 +59,10 @@ export default {
         },
         addToWishlist() {
             console.log("wishlist");
+        },
+
+        productsFromStore() {
+            return this.$store.state.productsFromFilter;
         },
     },
 };

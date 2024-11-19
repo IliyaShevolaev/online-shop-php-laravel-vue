@@ -145,7 +145,8 @@ export default {
                 category_id: this.filters.category,
                 genres: this.filters.genres,
             }).then(res => {
-                this.$store.state.productsFromFilter = res.data.data;
+                this.$store.commit('setProductsFromFilter', res.data.data);
+                this.$store.commit('incrementFilterKey'); 
                 this.$router.push({ name: 'product.filter' });
             });
 
