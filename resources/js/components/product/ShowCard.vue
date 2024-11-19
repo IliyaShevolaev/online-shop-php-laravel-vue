@@ -21,7 +21,7 @@
 
                     <div class="mt-3">
                         <span v-for="(genre, index) in product.genres" :key="index">
-                            <button class="btn btn-outline-primary btn-sm me-2">{{ genre.title }}</button>
+                            <button @click="toGenre(genre.id)" class="btn btn-outline-primary btn-sm me-2">{{ genre.title }}</button>
                         </span>
                     </div>
 
@@ -74,6 +74,15 @@ export default {
                 .finally(() => {
                     this.isLoading = false;
                 });
+        },
+
+        toGenre(genreId) {
+            axios.post('/api/products/filter', {
+                genres: [genreId],
+            }).then(res => {
+                this.$store.commit('setProductsFromFilter', res.data.data);
+                this.$router.push({ name: 'product.filter' });
+            });
         },
     },
 }

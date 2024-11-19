@@ -11,13 +11,13 @@
                 </button>
 
                 <div class="d-flex justify-content-center w-50 mx-auto">
-                    <form class="d-flex w-50">
-                        <input class="form-control me-2 rounded-pill" type="search" placeholder="Search"
-                            aria-label="Поиск">
-                        <button class="btn btn-primary rounded-pill" type="submit">
+                    <div class="d-flex w-50">
+                        <input v-model="this.findText" class="form-control me-2 rounded-pill" type="search"
+                            placeholder="Search" aria-label="Поиск">
+                        <button @click.prevent="findProducts" class="btn btn-primary rounded-pill" type="submit">
                             <i class="bi bi-search fs-4"></i>
                         </button>
-                    </form>
+                    </div>
                 </div>
 
                 <div class="collapse navbar-collapse" id="navbarNav">
@@ -107,6 +107,7 @@ import axios from 'axios';
 export default {
     data() {
         return {
+            findText: '',
             showFilters: false,
             categories: null,
             priceMin: null,
@@ -132,6 +133,16 @@ export default {
         closeFilters() {
             this.showFilters = false;
         },
+
+        postFilter(data) {
+            axios.post('/api/products/filter', data)
+                .then(res => {
+                    this.$store.commit('setProductsFromFilter', res.data.data);
+                    this.$store.commit('incrementFilterKey');
+                    this.$router.push({ name: 'product.filter' });
+                });
+        },
+
         applyFilters() {
             if (this.priceMin !== null || this.priceMax !== null) {
                 this.price = {
@@ -140,26 +151,29 @@ export default {
                 };
             }
 
-            axios.post('/api/products/filter', {
+            this.postFilter({
                 price: this.price,
                 category_id: this.filters.category,
                 genres: this.filters.genres,
-            }).then(res => {
-                this.$store.commit('setProductsFromFilter', res.data.data);
-                this.$store.commit('incrementFilterKey'); 
-                this.$router.push({ name: 'product.filter' });
             });
 
             this.closeFilters();
         },
 
+        findProducts() {
+            this.postFilter({
+                title: this.findText,
+            });
+        },
+        
         getFiltersList() {
             axios.get('/api/products/filter/list')
                 .then(res => {
                     this.categories = res.data.categories;
                     this.genres = res.data.genres;
                 });
-        }
+        },
+
     },
 
 };

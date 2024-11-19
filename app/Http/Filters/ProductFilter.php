@@ -24,7 +24,8 @@ class ProductFilter extends AbstractFilter
 
     public function title(Builder $builder, $value)
     {
-        $builder->where('title', 'like', "%{$value}%");
+        $value = strtolower($value);
+        $builder->where('title', 'ILIKE', "%{$value}%");
     }
 
     public function price(Builder $builder, $value)
