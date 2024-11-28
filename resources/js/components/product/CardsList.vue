@@ -30,6 +30,10 @@
 import axios from 'axios';
 
 export default {
+    props: {
+        productsPath: String,
+    },  
+
     mounted() {
         this.getProducts();
     },
@@ -46,7 +50,7 @@ export default {
         },
 
         getProducts() {
-            axios.get('/api/products/')
+            axios.get(`/api/products/${this.productsPath}`)
                 .then(res => {
                     this.products = res.data.data;
                 })

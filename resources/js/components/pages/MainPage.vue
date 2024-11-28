@@ -1,5 +1,5 @@
 <template>
-    <CardsList></CardsList>
+    <CardsList productsPath=""></CardsList>
 </template>
 
 <script>
