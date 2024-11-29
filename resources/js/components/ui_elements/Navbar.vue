@@ -23,10 +23,10 @@
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav ms-auto">
                         <li class="nav-item text-center">
-                            <router-link to="/profile" class="nav-link active" aria-current="page">
+                            <button @click.prevent="openAuthModal" class="nav-link active" aria-current="page">
                                 <i class="bi bi-person fs-2"></i>
                                 <div>Profile</div>
-                            </router-link>
+                            </button>
                         </li>
                         <li class="nav-item text-center">
                             <router-link to="/cart" class="nav-link active" aria-current="page">
@@ -44,6 +44,10 @@
                 </div>
             </div>
         </nav>
+
+        <div v-if="showAuthModal" class="modal-backdrop">
+            <AuthModal @close="closeAuthModal"></AuthModal>
+        </div>
 
         <div v-if="showFilters" class="modal-backdrop">
             <div class="modal-dialog">
@@ -103,11 +107,17 @@
 
 <script>
 import axios from 'axios';
+import AuthModal from './AuthModal.vue';
 
 export default {
+    components: {
+        AuthModal,
+    },
+
     data() {
         return {
             findText: '',
+
             showFilters: false,
             categories: null,
             priceMin: null,
@@ -119,6 +129,8 @@ export default {
                 category: null,
                 genres: [],
             },
+
+            showAuthModal: false,
         };
     },
 
@@ -132,6 +144,23 @@ export default {
         },
         closeFilters() {
             this.showFilters = false;
+        },
+
+        openAuthModal() {
+            axios.get('/api/is-authorized')
+                .then(res => {
+                    if (res.data.value) {
+                        this.$router.push({ name: 'page.profile' });
+                    } else {
+                        this.showAuthModal = true;
+                    }
+                });
+
+
+        },
+
+        closeAuthModal() {
+            this.showAuthModal = false;
         },
 
         postFilter(data) {
@@ -165,7 +194,7 @@ export default {
                 title: this.findText,
             });
         },
-        
+
         getFiltersList() {
             axios.get('/api/products/filter/list')
                 .then(res => {
