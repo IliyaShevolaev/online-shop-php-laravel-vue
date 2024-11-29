@@ -2,15 +2,15 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">{{this.modalName}}</h5>
+                <h5 class="modal-title">{{ this.modalName }}</h5>
                 <button type="button" class="btn-close" @click="closeModal"><i class="bi bi-x-circle"></i></button>
             </div>
             <div class="modal-body">
                 <form @submit.prevent="login">
                     <div v-if="registerMode" class="form-group mb-3">
                         <label for="name" class="form-label">Name</label>
-                        <input type="text" id="name" class="form-control" v-model="name"
-                            placeholder="Enter your name" required />
+                        <input type="text" id="name" class="form-control" v-model="name" placeholder="Enter your name"
+                            required />
                     </div>
 
                     <div v-if="registerMode" class="form-group mb-3">
@@ -85,18 +85,33 @@ export default {
                 this.changeButtonText = 'Log in';
             }
 
-            this.registerMode  = !this.registerMode;
+            this.registerMode = !this.registerMode;
         },
 
         login() {
-            axios.get('/sanctum/csrf-cookie').then(() => {
-                axios.post('/login', {
-                    email: this.email,
-                    password: this.password,
-                }).then(() => {
-                    this.closeModal();
+        
+            if (this.registerMode) {
+                axios.get('/sanctum/csrf-cookie').then(() => {
+                    axios.post('/register', {
+                        name: this.name,
+                        surname: this.surname,
+                        email: this.email,
+                        password: this.password,
+                        password_confirmation: this.password_confirm,
+                    }).then((res) => {
+                        this.closeModal();
+                    });
                 });
-            });
+            } else {
+                axios.get('/sanctum/csrf-cookie').then(() => {
+                    axios.post('/login', {
+                        email: this.email,
+                        password: this.password,
+                    }).then(() => {
+                        this.closeModal();
+                    });
+                });
+            }
         },
 
     }
