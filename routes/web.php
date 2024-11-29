@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\IndexController;
 use App\Http\Controllers\Admin\UserController;
@@ -51,5 +52,8 @@ Route::group(['prefix' => 'admin'], function () {
         Route::delete('/{user}', [UserController::class, 'delete'])->name('users.delete');
     });
 });
+
+Auth::routes();
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Route::get('/{page}', IndexController::class)->where('page', '.*');
