@@ -25,16 +25,22 @@
                             placeholder="Enter your email" required />
                     </div>
 
-                    <div class="form-group mb-3">
+                    <div class="form-group mb-3 position-relative">
                         <label for="password" class="form-label">Password</label>
-                        <input type="password" id="password" class="form-control" v-model="password"
-                            placeholder="Enter your password" required />
+                        <div class="input-wrapper">
+                            <input :type="hidePassword ? 'password' : 'text'" id="password" class="form-control"
+                                v-model="password" placeholder="Enter your password" required />
+                            <i class="bi bi-eye-fill toggle-password" @click="changeViewPasswordMode"></i>
+                        </div>
                     </div>
 
-                    <div v-if="registerMode" class="form-group mb-3">
-                        <label for="password_confirm" class="form-label">Confirm password</label>
-                        <input type="password" id="password" class="form-control" v-model="password_confirm"
-                            placeholder="Confirm your password" required />
+                    <div v-if="registerMode" class="form-group mb-3 position-relative">
+                        <label for="password_confirm" class="form-label">Password</label>
+                        <div class="input-wrapper">
+                            <input :type="hidePassword ? 'password' : 'text'" id="password_confirm" class="form-control"
+                                v-model="password_confirm" placeholder="Confirm your password" required />
+                            <i class="bi bi-eye-fill toggle-password" @click="changeViewPasswordMode"></i>
+                        </div>
                     </div>
 
                     <div class="text-center">
@@ -62,6 +68,8 @@ export default {
             changeModeText: 'Don\'t have an account?',
             changeButtonText: 'Register',
 
+            hidePassword: true,
+
             name: '',
             surname: '',
             email: '',
@@ -88,8 +96,12 @@ export default {
             this.registerMode = !this.registerMode;
         },
 
+        changeViewPasswordMode() {
+            console.log(123);
+            this.hidePassword = !this.hidePassword;
+        },
+
         login() {
-        
             if (this.registerMode) {
                 axios.get('/sanctum/csrf-cookie').then(() => {
                     axios.post('/register', {
@@ -98,7 +110,7 @@ export default {
                         email: this.email,
                         password: this.password,
                         password_confirmation: this.password_confirm,
-                    }).then((res) => {
+                    }).then(() => {
                         this.closeModal();
                     });
                 });
@@ -227,5 +239,28 @@ export default {
 .btn:active {
     transform: translateY(0);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.position-relative {
+    position: relative;
+}
+
+.input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.toggle-password {
+    position: absolute;
+    right: 10px;
+    cursor: pointer;
+    font-size: 1.2rem;
+    color: #666;
+    transition: color 0.3s ease;
+}
+
+.toggle-password:hover {
+    color: #004c99;
 }
 </style>
