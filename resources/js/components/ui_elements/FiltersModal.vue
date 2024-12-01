@@ -51,12 +51,15 @@
 
 <script>
 export default {
+    props: {
+        genres: Array,
+        categories: Array,        
+    },  
+
     data() {
         return {
-            categories: null,
             priceMin: null,
             priceMax: null,
-            genres: null,
 
             filters: {
                 price: null,
@@ -64,10 +67,6 @@ export default {
                 genres: [],
             },
         }
-    },
-
-    mounted() {
-        this.getFiltersList();
     },
 
     methods: {
@@ -99,14 +98,6 @@ export default {
             });
 
             this.closeFilters();
-        },
-
-        getFiltersList() {
-            axios.get('/api/products/filter/list')
-                .then(res => {
-                    this.categories = res.data.categories;
-                    this.genres = res.data.genres;
-                });
         },
     },
 }

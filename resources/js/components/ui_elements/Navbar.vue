@@ -42,7 +42,9 @@
         </div>
 
         <div v-if="showFilters" class="modal-backdrop">
-            <FiltersModal ref="filtersModal" @close="closeFiltersModal"></FiltersModal>
+            <FiltersModal :categories="this.categories" :genres="this.genres" ref="filtersModal"
+                @close="closeFiltersModal">
+            </FiltersModal>
         </div>
     </div>
 </template>
@@ -61,9 +63,15 @@ export default {
         FindBar,
     },
 
+    mounted() {
+        this.getFiltersList();
+    },
+
     data() {
         return {
             showFilters: false,
+            genres: null,
+            categories: null,
 
             showAuthModal: false,
         };
@@ -76,6 +84,14 @@ export default {
 
         closeFiltersModal() {
             this.showFilters = false;
+        },
+
+        getFiltersList() {
+            axios.get('/api/products/filter/list')
+                .then(res => {
+                    this.categories = res.data.categories;
+                    this.genres = res.data.genres;
+                });
         },
 
         openAuthModal() {
@@ -95,7 +111,6 @@ export default {
             this.showAuthModal = false;
         },
     },
-
 };
 </script>
 
@@ -171,5 +186,4 @@ export default {
     align-items: center;
     z-index: 1050;
 }
-
 </style>
