@@ -95,16 +95,13 @@ export default {
         },
 
         openAuthModal() {
-            axios.get('/api/is-authorized')
-                .then(res => {
-                    if (res.data.value) {
-                        this.$router.push({ name: 'page.profile' });
-                    } else {
-                        this.showAuthModal = true;
-                    }
-                });
+            let isAuth = localStorage.getItem('auth'); 
 
-
+            if (isAuth) {
+                this.$router.push({ name: 'page.profile' });
+            } else {
+                this.showAuthModal = true;
+            }
         },
 
         closeAuthModal() {
