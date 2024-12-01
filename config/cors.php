@@ -19,8 +19,6 @@ return [
 
     'allowed_methods' => ['*'],
 
-    //'allowed_origins' => ['*'],
-    //'allowed_origins' => ['https://smartmart.local'],
     'allowed_origins' => [env('CORS_ALLOWED_ORIGINS')],
 
     'allowed_origins_patterns' => [],

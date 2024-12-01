@@ -97,35 +97,41 @@ export default {
         },
 
         changeViewPasswordMode() {
-            console.log(123);
             this.hidePassword = !this.hidePassword;
         },
 
         login() {
-            if (this.registerMode) {
-                axios.get('/sanctum/csrf-cookie').then(() => {
-                    axios.post('/register', {
-                        name: this.name,
-                        surname: this.surname,
-                        email: this.email,
-                        password: this.password,
-                        password_confirmation: this.password_confirm,
-                    }).then(() => {
-                        this.closeModal();
-                    });
-                });
-            } else {
-                axios.get('/sanctum/csrf-cookie').then(() => {
-                    axios.post('/login', {
-                        email: this.email,
-                        password: this.password,
-                    }).then(() => {
-                        this.closeModal();
-                    });
-                });
-            }
-        },
+            let userData = {};
+            let authPath = '';
 
+            if (this.registerMode) {
+                userData = {
+                    name: this.name,
+                    surname: this.surname,
+                    email: this.email,
+                    password: this.password,
+                    password_confirmation: this.password_confirm,
+                };
+
+                authPath = '/register';
+            } else {
+                userData = {
+                    email: this.email,
+                    password: this.password,
+                };
+
+                authPath = '/login';
+            }
+
+            axios.get('/sanctum/csrf-cookie').then(() => {
+                axios.post(authPath, userData)
+                    .then(() => {
+                        localStorage.setItem('auth', true);
+                        this.closeModal();
+                        this.$router.push({ name: 'page.profile' });
+                    });
+            });
+        },
     }
 };
 </script>
