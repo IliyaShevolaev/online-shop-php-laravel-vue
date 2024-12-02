@@ -17,9 +17,16 @@
             <input name="email" value="{{ old('email') }}" type="email" class="form-control" id="email"
                 placeholder="Enter email">
 
-            <label for="age" class="mt-3">Age</label>
-            <input name="age" value="{{ old('age') }}" type="number" class="form-control" id="age"
-                placeholder="Enter age">
+            {{-- <label for="password" class="mt-3">Password</label>
+            <input name="password" value="{{ old('password') }}" type="text" class="form-control" id="password"
+                placeholder="Enter password"> --}}
+
+            <label for="role" class="mt-3">Role</label>
+            <select name="role" class="form-control" id="role">
+                <option value="" disabled selected>Select role</option>
+                <option value="1" {{ old('role') == 1 ? 'selected' : '' }}>Admin</option>
+                <option value="2" {{ old('role') == 2 ? 'selected' : '' }}>User</option>
+            </select>
 
             <label for="gender" class="mt-3">Gender</label>
             <select name="gender" class="form-control" id="gender">

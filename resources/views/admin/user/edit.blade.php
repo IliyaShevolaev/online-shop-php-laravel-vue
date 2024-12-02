@@ -14,6 +14,13 @@
             <input name="surname" value="{{ $user->surname }}" type="text" class="form-control" id="surname"
                 placeholder="Enter surname">
 
+            <label for="role" class="mt-3">Role</label>
+            <select name="role" class="form-control" id="role">
+                <option value="" disabled selected>Select role</option>
+                <option value="1" {{ $user->role == 1 ? 'selected' : '' }}>Admin</option>
+                <option value="2" {{ $user->role == 2 ? 'selected' : '' }}>User</option>
+            </select>
+
             <label for="age" class="mt-3">Age</label>
             <input name="age" value="{{ $user->age }}" type="number" class="form-control" id="age"
                 placeholder="Enter age">

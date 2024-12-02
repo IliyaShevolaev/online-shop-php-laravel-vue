@@ -45,7 +45,6 @@ class UserController extends Controller
     public function update(UserUpdateRequest $userRequest, User $user)
     {
         $data = $userRequest->validated();
-
         $user->update($data);
 
         return view('admin.user.show', compact('user'));

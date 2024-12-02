@@ -24,6 +24,7 @@ class UserUpdateRequest extends FormRequest
         return [
             'name' => 'required|string',
             'surname' => 'required|string',
+            'role' => 'required|integer',
             'age' => 'nullable|integer',
             'gender' => 'nullable|integer',
             'address' => 'nullable|string',

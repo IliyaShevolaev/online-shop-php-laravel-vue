@@ -16,6 +16,9 @@ class User extends Authenticatable
     const GENDER_FEMALE = 2;
     const GENDER_NONE = 3;
 
+    const ROLE_ADMIN = 1;
+    const ROLE_USER = 2;
+
     private static $defaultPassword = '12345';
 
     /**
@@ -57,6 +60,19 @@ class User extends Authenticatable
     public function getGenderTitleAttribute()
     {
         return User::getGenders()[$this->gender];
+    }
+
+    public static function getRoles()
+    {
+        return [
+            User::ROLE_ADMIN => 'admin',
+            User::ROLE_USER => 'user',
+        ];
+    }
+
+    public function getRoleTitleAttribute()
+    {
+        return User::getRoles()[$this->role];
     }
 
     /**

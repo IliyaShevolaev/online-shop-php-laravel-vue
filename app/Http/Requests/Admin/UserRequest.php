@@ -25,6 +25,7 @@ class UserRequest extends FormRequest
             'name' => 'required|string',
             'surname' => 'required|string',
             'email' => 'required|string|email|unique:users,email',
+            'role' => 'required|integer',
             // 'password' => 'required|string',
             'age' => 'nullable|integer',
             'gender' => 'nullable|integer',

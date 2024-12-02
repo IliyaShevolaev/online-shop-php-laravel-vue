@@ -11,6 +11,7 @@
                 <th scope="col">Name</th>
                 <th scope="col">Surname</th>
                 <th scope="col">Email</th>
+                <th scope="col">Role</th>
                 <th scope="col">Age</th>
                 <th scope="col">Gender</th>
                 <th scope="col">Address</th>
@@ -24,6 +25,7 @@
                     <td>{{ $user->name }}</td>
                     <td>{{ $user->surname }}</td>
                     <td>{{ $user->email }}</td>
+                    <td>{{ $user->roleTitle }}</td>
                     <td>{{ $user->age }}</td>
                     <td>{{ $user->genderTitle }}</td>
                     <td>{{ $user->address }}</td>
