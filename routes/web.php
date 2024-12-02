@@ -9,7 +9,7 @@ use App\Http\Controllers\Admin\GenreController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\CategoryController;
 
-Route::group(['prefix' => 'admin'], function () {
+Route::group(['prefix' => 'admin', 'middleware' => 'admin'], function () {
     Route::get('/', [AdminController::class, 'index'])->name('admin.index');
 
     Route::group(['prefix' => 'product'], function () {
@@ -55,4 +55,4 @@ Route::group(['prefix' => 'admin'], function () {
 
 Auth::routes();
 
-Route::get('/{page}', IndexController::class)->where('page', '.*');
+Route::get('/{page}', IndexController::class)->where('page', '.*')->name('default');
