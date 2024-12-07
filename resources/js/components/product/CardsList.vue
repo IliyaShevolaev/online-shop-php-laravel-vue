@@ -15,7 +15,7 @@
                             <button class="btn btn-primary btn-lg fw-bold flex-grow-1 me-2" @click.stop="goToCart">
                                 Buy
                             </button>
-                            <button class="btn btn-outline-primary btn-icon" @click.stop="addToWishlist">
+                            <button class="btn btn-outline-primary btn-icon" @click.stop="addToFavorites(product.id)">
                                 <i class="bi bi-bookmark"></i>
                             </button>
                         </div>
@@ -24,15 +24,22 @@
             </div>
         </div>
     </div>
+
+    <Notification ref="notification"></Notification>
 </template>
 
 <script>
 import axios from 'axios';
+import Notification from '../ui_elements/Notification.vue';
 
 export default {
     props: {
         productsPath: String,
-    },  
+    },
+
+    components: {
+        Notification,
+    },
 
     mounted() {
         this.getProducts();
@@ -57,7 +64,24 @@ export default {
                 .catch(error => {
                     console.error(error);
                 });
-        }
+        },
+
+        addToFavorites(id) {
+            axios.post('/api/products/favorites/add', {
+                product_id: id,
+            }).then((res) => {
+                if (res.data.already_exists) {
+                    this.notify('alert-danger', 'deleted from favorites');
+                    this.getProducts();
+                } else {
+                    this.notify('alert-success', 'added to your favorites')
+                }
+            });
+        },
+
+        notify(type, message) {
+            this.$refs.notification.showNotification(type, message);
+        },
     },
 
     data() {
