@@ -21,7 +21,8 @@
 
                     <div class="mt-3">
                         <span v-for="(genre, index) in product.genres" :key="index">
-                            <button @click="toGenre(genre.id)" class="btn btn-outline-primary btn-sm me-2">{{ genre.title }}</button>
+                            <button @click="toGenre(genre.id)" class="btn btn-outline-primary btn-sm me-2">{{
+                                genre.title }}</button>
                         </span>
                     </div>
 
@@ -41,14 +42,21 @@
     <div v-else>
         <p>Loading...</p>
     </div>
+
+    <Notification ref="notification"></Notification>
 </template>
 
 <script>
 import axios from 'axios';
+import Notification from '../ui_elements/Notification.vue';
 
 export default {
     props: {
         id: String,
+    },
+
+    components: {
+        Notification
     },
 
     data() {
@@ -88,9 +96,23 @@ export default {
         addToFavorites() {
             axios.post('/api/products/favorites/add', {
                 product_id: this.product.id,
-            }).then(r => console.log(r));
-        }
+            }).then((res) => {
+                if (res.data.already_exists) {
+                    this.notify('alert-warning', 'already added to your favorites')
+                } else {
+                    this.notify('alert-success', 'added to favorites');
+                }
+            });
+        },
+
+        notify(type, message) {
+            this.$refs.notification.showNotification(type, message);
+            //"alert-warning"
+        },
+
     },
+
+    
 }
 </script>
 

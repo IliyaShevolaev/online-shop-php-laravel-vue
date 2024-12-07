@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\API\Product;
 
-use App\Models\UserFavorites;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Product\ProductResource;
 use Illuminate\Http\Request;
@@ -13,7 +12,7 @@ class FavoriteController extends Controller
     public function index()
     {
         $products = Auth::user()->favorites()->get();
-        
+
         return ProductResource::collection($products);
     }
 
