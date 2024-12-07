@@ -27,10 +27,10 @@
                             </router-link>
                         </li>
                         <li class="nav-item text-center">
-                            <router-link to="/favorites" class="nav-link active" aria-current="page">
+                            <button @click.prevent="openFavorites" class="nav-link active" aria-current="page">
                                 <i class="bi bi-bookmarks fs-2"></i>
                                 <div>Favorites</div>
-                            </router-link>
+                            </button>
                         </li>
                     </ul>
                 </div>
@@ -94,19 +94,27 @@ export default {
                 });
         },
 
-        openAuthModal() {
+        requireAuth(successPath) {
             let isAuth = localStorage.getItem('auth'); 
 
             if (isAuth) {
-                this.$router.push({ name: 'page.profile' });
+                this.$router.push({ name: successPath });
             } else {
                 this.showAuthModal = true;
             }
         },
 
+        openAuthModal() {
+            this.requireAuth('page.profile');
+        },
+
         closeAuthModal() {
             this.showAuthModal = false;
         },
+
+        openFavorites() {
+            this.requireAuth('page.favorites');
+        }
     },
 };
 </script>

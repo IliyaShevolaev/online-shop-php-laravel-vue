@@ -67,17 +67,21 @@ export default {
         },
 
         addToFavorites(id) {
-            axios.post('/api/products/favorites/add', {
+            if (localStorage.getItem('auth')) {
+                axios.post('/api/products/favorites/add', {
                 product_id: id,
             }).then((res) => {
                 if (res.data.already_exists) {
-                    this.notify('alert-danger', 'deleted from favorites');
+                    this.notify('alert-danger', 'Aeleted from favorites');
                 } else {
-                    this.notify('alert-success', 'added to your favorites')
+                    this.notify('alert-success', 'Added to your favorites')
                 }
 
                 this.getProducts();
             });
+            } else {
+                this.notify('alert-warning', 'Authorization is required')
+            }
         },
 
         notify(type, message) {
