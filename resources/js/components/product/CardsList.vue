@@ -16,7 +16,7 @@
                                 Buy
                             </button>
                             <button class="btn btn-outline-primary btn-icon" @click.stop="addToFavorites(product.id)">
-                                <i class="bi bi-bookmark"></i>
+                                <i :class="product.inFavorites? 'bi bi-bookmark-fill' : 'bi bi-bookmark'"></i>
                             </button>
                         </div>
                     </div>
@@ -72,10 +72,11 @@ export default {
             }).then((res) => {
                 if (res.data.already_exists) {
                     this.notify('alert-danger', 'deleted from favorites');
-                    this.getProducts();
                 } else {
                     this.notify('alert-success', 'added to your favorites')
                 }
+
+                this.getProducts();
             });
         },
 

@@ -31,7 +31,7 @@
                             <i class="bi bi-cart"></i> Buy
                         </button>
                         <button @click.prevent="addToFavorites" class="btn btn-outline-primary">
-                            <i class="bi bi-bookmarks fs-2"></i>
+                            <i :class="product.inFavorites? 'bi bi-bookmark-fill fs-2' : 'bi bi-bookmark fs-2'"></i>
                         </button>
                     </div>
                 </div>
@@ -102,6 +102,8 @@ export default {
                 } else {
                     this.notify('alert-success', 'added to your favorites')
                 }
+
+                this.getProduct();
             });
         },
 

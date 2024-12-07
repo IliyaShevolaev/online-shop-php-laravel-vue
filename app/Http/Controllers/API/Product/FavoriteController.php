@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API\Product;
 
+use App\Actions\Favorites\CreateFavoriteAction;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Product\ProductResource;
 use Illuminate\Http\Request;
@@ -16,18 +17,10 @@ class FavoriteController extends Controller
         return ProductResource::collection($products);
     }
 
-    public function create(Request $request)
+    public function create(Request $request, CreateFavoriteAction $createFavoriteAction)
     {
         $product_id = $request->input('product_id');
-        $user = Auth::user();
-
-        if (!$user->favorites()->where('product_id', $product_id)->exists()) {
-            $user->favorites()->attach($product_id);
-            return response()->json(['already_exists' => 0]);
-        } else {
-            $user->favorites()->detach($product_id);
-        }
         
-        return response()->json(['already_exists' => 1]);
+        return $createFavoriteAction->handle($product_id);
     }
 }

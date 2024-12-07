@@ -2,11 +2,24 @@
 
 namespace App\Http\Resources\Product;
 
+
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class ProductResource extends JsonResource
 {
+    private function CheckFavoriteDependency() 
+    {
+        $user = Auth::user();
+
+        if ($user && $user->favorites()->where('product_id', $this->id)->exists()) {
+            return true;
+        }
+
+        return false;
+    }
+
     /**
      * Transform the resource into an array.
      *
@@ -24,6 +37,7 @@ class ProductResource extends JsonResource
             'products_count' => $this->products_count,
             'category' => $this->category,
             'genres' => $this->genres,
+            'inFavorites' => $this->CheckFavoriteDependency(),
         ];
     }
 }
