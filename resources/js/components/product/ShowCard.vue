@@ -29,7 +29,7 @@
                         <button class="btn btn-primary btn-lg fw-bold me-2 btn-buy">
                             <i class="bi bi-cart"></i> Buy
                         </button>
-                        <button class="btn btn-outline-primary">
+                        <button @click.prevent="addToFavorites" class="btn btn-outline-primary">
                             <i class="bi bi-bookmarks fs-2"></i>
                         </button>
                     </div>
@@ -84,6 +84,12 @@ export default {
                 this.$router.push({ name: 'product.filter' });
             });
         },
+
+        addToFavorites() {
+            axios.post('/api/products/favorites/add', {
+                product_id: this.product.id,
+            }).then(r => console.log(r));
+        }
     },
 }
 </script>

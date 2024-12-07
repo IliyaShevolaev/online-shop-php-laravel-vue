@@ -44,7 +44,8 @@ class User extends Authenticatable
         return User::$defaultPassword;
     }
 
-    public static function setDefaultPassword(string $newPassword) {
+    public static function setDefaultPassword(string $newPassword)
+    {
         User::$defaultPassword == $newPassword;
     }
 
@@ -86,5 +87,13 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+    
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function favorites()
+    {
+        return $this->belongsToMany(Product::class, 'user_favorites');
     }
 }

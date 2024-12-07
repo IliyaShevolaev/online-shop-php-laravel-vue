@@ -27,4 +27,9 @@ class Product extends Model
     {
         return url('storage/' . $this->image_path);
     }
+
+    public function users()
+    {
+        return $this->belongsToMany(User::class, 'user_favorites');
+    }
 }
