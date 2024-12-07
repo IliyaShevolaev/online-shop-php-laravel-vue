@@ -98,16 +98,15 @@ export default {
                 product_id: this.product.id,
             }).then((res) => {
                 if (res.data.already_exists) {
-                    this.notify('alert-warning', 'already added to your favorites')
+                    this.notify('alert-danger', 'deleted from favorites');
                 } else {
-                    this.notify('alert-success', 'added to favorites');
+                    this.notify('alert-success', 'added to your favorites')
                 }
             });
         },
 
         notify(type, message) {
             this.$refs.notification.showNotification(type, message);
-            //"alert-warning"
         },
 
     },

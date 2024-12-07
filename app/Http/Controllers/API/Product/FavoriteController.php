@@ -24,7 +24,9 @@ class FavoriteController extends Controller
         if (!$user->favorites()->where('product_id', $product_id)->exists()) {
             $user->favorites()->attach($product_id);
             return response()->json(['already_exists' => 0]);
-        } 
+        } else {
+            $user->favorites()->detach($product_id);
+        }
         
         return response()->json(['already_exists' => 1]);
     }
