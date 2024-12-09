@@ -6,7 +6,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\Product\FilterController;
 use App\Http\Controllers\API\Product\ProductsController;
 use App\Http\Controllers\API\Product\FilterListController;
-use App\Http\Controllers\Auth\AuthCheckController;
+use App\Http\Controllers\API\Profile\AuthCheckController;
+use App\Http\Controllers\API\Profile\ProfileController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -25,4 +26,8 @@ Route::group(['prefix' => 'products'], function() {
     Route::post('/filter', FilterController::class);
     Route::get('/favorites/index', [FavoriteController::class, 'index']);
     Route::post('/favorites/add', [FavoriteController::class, 'create']);
+});
+
+Route::group(['prefix' => 'profile'], function() {
+    Route::get('/', [ProfileController::class, 'index']);
 });

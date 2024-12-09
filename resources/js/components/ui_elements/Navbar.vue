@@ -125,6 +125,10 @@ export default {
     box-shadow: none;
 }
 
+.custom-navbar .navbar-brand:hover {
+    transform: translateY(-2px);
+}
+
 .custom-navbar {
     background-color: #004c99 !important;
     border-bottom: 2px solid #0066cc;

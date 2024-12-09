@@ -8,7 +8,6 @@ import CardsList from '../product/CardsList.vue';
 export default {
     components: {
         CardsList,
-        
     }
 };
 </script>
