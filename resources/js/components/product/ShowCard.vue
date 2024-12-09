@@ -104,7 +104,7 @@ export default {
                     this.notify('alert-success', 'Added to your favorites')
                 }
 
-                this.getProduct();
+                this.product.inFavorites = !this.product.inFavorites;
             });
             } else {
                 this.notify('alert-warning', 'Authorization is required')
