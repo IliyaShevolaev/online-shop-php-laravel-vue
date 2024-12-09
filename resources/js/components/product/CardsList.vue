@@ -72,7 +72,7 @@ export default {
                 product_id: id,
             }).then((res) => {
                 if (res.data.already_exists) {
-                    this.notify('alert-danger', 'Aeleted from favorites');
+                    this.notify('alert-danger', 'Deleted from favorites');
                 } else {
                     this.notify('alert-success', 'Added to your favorites')
                 }

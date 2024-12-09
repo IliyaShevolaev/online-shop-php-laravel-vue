@@ -15,8 +15,8 @@
                             <button class="btn btn-primary btn-lg fw-bold flex-grow-1 me-2" @click.stop="goToCart">
                                 Buy
                             </button>
-                            <button class="btn btn-outline-primary btn-icon" @click.stop="addToWishlist">
-                                <i class="bi bi-bookmark"></i>
+                            <button class="btn btn-outline-primary btn-icon" @click.stop="addToFavorites(product.id)">
+                                <i :class="product.inFavorites? 'bi bi-bookmark-fill' : 'bi bi-bookmark'"></i>
                             </button>
                         </div>
                     </div>
@@ -24,14 +24,22 @@
             </div>
         </div>
     </div>
+
+    <Notification ref="notification"></Notification>
 </template>
 
 <script>
+import Notification from '../ui_elements/Notification.vue';
+
 export default {
     data() {
         return {
             products: [],
         };
+    },
+
+    components: {
+        Notification
     },
 
     computed: {
@@ -63,6 +71,33 @@ export default {
 
         productsFromStore() {
             return this.$store.state.productsFromFilter;
+        },
+
+        addToFavorites(id) {
+            if (localStorage.getItem('auth')) {
+                axios.post('/api/products/favorites/add', {
+                product_id: id,
+            }).then((res) => {
+                if (res.data.already_exists) {
+                    this.notify('alert-danger', 'Deleted from favorites');
+                } else {
+                    this.notify('alert-success', 'Added to your favorites')
+                }
+
+                let product = this.products.find(product => product.id === id);
+                
+                if (product) {
+                    product.inFavorites = !product.inFavorites; 
+                }
+                
+            });
+            } else {
+                this.notify('alert-warning', 'Authorization is required')
+            }
+        },
+
+        notify(type, message) {
+            this.$refs.notification.showNotification(type, message);
         },
     },
 };
