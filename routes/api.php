@@ -30,4 +30,5 @@ Route::group(['prefix' => 'products'], function() {
 
 Route::group(['prefix' => 'profile'], function() {
     Route::get('/', [ProfileController::class, 'index']);
+    Route::post('/edit', [ProfileController::class, 'edit']);
 });

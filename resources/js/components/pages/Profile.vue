@@ -1,26 +1,64 @@
 <template>
 
-    <div class="profile-container d-flex flex-column align-items-center text-center mt-5">
-        <div class="alert alert-warning mt-4" v-if="!user || !user.orderInfoComplete">
-            Please complete all order details to proceed.
-        </div>
+    <div  class="profile-container d-flex flex-column align-items-center text-center mt-5">
 
         <div v-if="user" class="user-info mt-5">
             <h1 class="mb-4">Welcome, {{ user.name }} {{ user.surname }}!</h1>
             <div class="info-card shadow-sm p-4 mb-4 bg-white rounded">
                 <p><strong>Email:</strong> {{ user.email }}</p>
-                <p><strong>Age:</strong> <span :class="{ 'text-danger': !user.age }">{{ user.age || 'Not specified'
-                        }}</span></p>
-                <p><strong>Address:</strong> <span :class="{ 'text-danger': !user.age }">{{ user.age || 'Not specified'
-                        }}</span></p>
+
+                <p><strong>Gender: </strong>
+                    <template v-if="editorMode">
+                        <select name="gender" v-model="this.newUserData.gender" class="form-control" id="gender">
+                            <option value="1">Male</option>
+                            <option value="2">Female</option>
+                            <option value="3">Not specified</option>
+                        </select>
+                    </template>
+                    <template v-else>
+                    <span :class="{ 'text-danger': !user.gender }">
+                        {{ getGenderTitle(user.gender) || 'Not specified' }}</span>
+                    </template>
+                </p>
+
+                <p><strong>Age: </strong>
+                    <template v-if="editorMode">
+                        <input type="number" v-model="this.newUserData.age" name="age" id="age" placeholder="Enter age...">
+                    </template>
+                    <template v-else>
+                    <span :class="{ 'text-danger': !user.age }">
+                        {{ user.age || 'Not specified' }}</span>
+                    </template>
+                </p>
+
+                <p><strong>Address: </strong>
+                    <template v-if="editorMode">
+                        <input type="text" name="address" v-model="this.newUserData.address" id="address" placeholder="Enter address...">
+                    </template>
+                    <template v-else>
+                    <span :class="{ 'text-danger': !user.address }">
+                        {{ user.address || 'Not specified' }}</span>
+                    </template>
+                </p>
+
+                <template v-if="editorMode">
+                    <div>
+                        <button @click.prevent="editData" class="btn btn-primary">Submit</button>
+                    </div>
+                </template>
+
             </div>
-            <button class="btn btn-primary mt-3" @click="onEditClick">Edit Details</button>
+            <button class="btn btn-primary mt-3" @click.prevent="changeEditorMode">Edit Details</button>
         </div>
 
         <div v-else>
             <div class="spinner-border text-primary" role="status">
                 <span class="visually-hidden">Loading...</span>
             </div>
+        </div>
+
+        <div v-if="profileInfoCheck" class="alert alert-warning mt-4 fs-3" >
+            Please enter all data for ordering
         </div>
 
         <button class="btn btn-danger mt-4" @click="logout">Log out</button>
@@ -34,6 +72,13 @@ export default {
     data() {
         return {
             user: null,
+            editorMode: false,
+
+            newUserData: {
+                gender: null,
+                address: null,
+                age: null,
+            }
         };
     },
 
@@ -41,21 +86,50 @@ export default {
         this.getUserInfo();
     },
 
+    computed: {
+        profileInfoCheck() {
+            return this.user && (!this.user.age || !this.user.address);
+        }
+    },
+
     methods: {
         getUserInfo() {
             axios
                 .get("/api/profile/")
                 .then((res) => {
-                    this.user = res.data.user;
-                    console.log(this.user);
+                    this.user = res.data.data;
+                    this.newUserData = res.data.data;
                 })
                 .catch((error) => {
                     console.error("Error loading user data:", error);
                 });
         },
 
-        onEditClick() {
-            console.log("Editing user details");
+        changeEditorMode() {
+            this.editorMode = !this.editorMode;
+        },
+
+        editData() {
+            axios.post('/api/profile/edit', {
+                gender: this.newUserData.gender,
+                age: this.newUserData.age,
+                address: this.newUserData.address,
+            }).then(res => {
+                this.editorMode = false;
+                this.getUserInfo();
+            })
+        },
+
+        getGenderTitle(gender) {
+            if (gender === 1) {
+                return 'Male';
+            } 
+
+            if (gender === 2) {
+                return 'Female';
+            } 
+
+            return 'Not specified';
         },
 
         logout() {

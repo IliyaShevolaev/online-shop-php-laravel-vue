@@ -52,9 +52,9 @@ class User extends Authenticatable
     public static function getGenders()
     {
         return [
-            User::GENDER_MALE => 'male',
-            User::GENDER_FEMALE => 'female',
-            User::GENDER_NONE => 'not specified',
+            User::GENDER_MALE => 'Male',
+            User::GENDER_FEMALE => 'Female',
+            User::GENDER_NONE => 'Not specified',
         ];
     }
 
