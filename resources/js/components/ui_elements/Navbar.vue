@@ -65,6 +65,7 @@ export default {
 
     mounted() {
         this.getFiltersList();
+        this.authCheck();
     },
 
     data() {
@@ -95,10 +96,10 @@ export default {
         },
 
         requireAuth(successPath) {
-            let isAuth = localStorage.getItem('auth'); 
+            let isAuth = localStorage.getItem('auth');
 
-            if (isAuth) {
-                this.$router.push({ name: successPath });
+            if (isAuth == 'true') {
+                this.$router.push({ name: successPath });                
             } else {
                 this.showAuthModal = true;
             }
@@ -114,7 +115,16 @@ export default {
 
         openFavorites() {
             this.requireAuth('page.favorites');
-        }
+        },
+
+        authCheck() {
+            axios.get('/api/is-authorized')
+                .then((res) => {
+                    if (!res.data.value) {
+                        localStorage.setItem('auth', 'false');
+                    }
+                });
+        },
     },
 };
 </script>

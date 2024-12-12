@@ -126,7 +126,7 @@ export default {
             axios.get('/sanctum/csrf-cookie').then(() => {
                 axios.post(authPath, userData)
                     .then(() => {
-                        localStorage.setItem('auth', true);
+                        localStorage.setItem('auth', 'true');
                         this.closeModal();
                         this.$router.push({ name: 'page.profile' });
                     });
