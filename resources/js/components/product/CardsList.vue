@@ -67,7 +67,7 @@ export default {
         },
 
         addToFavorites(id) {
-            if (localStorage.getItem('auth')) {
+            if (localStorage.getItem('auth') == 'true') {
                 axios.post('/api/products/favorites/add', {
                 product_id: id,
             }).then((res) => {

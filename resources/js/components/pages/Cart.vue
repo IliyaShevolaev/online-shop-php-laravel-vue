@@ -1,13 +1,13 @@
 <template>
-    <div>
-        <h1>Cart</h1>
-    </div>
+    <CardsList productsPath="cart/index"></CardsList>
 </template>
 <script>
+import CardsList from '../product/CardsList.vue';
+
 export default {
-    
+    components: {
+        CardsList,
+    }
 }
 </script>
-<style>
-    
-</style>
+<style></style>

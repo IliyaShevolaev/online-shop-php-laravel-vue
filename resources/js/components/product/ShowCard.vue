@@ -27,7 +27,7 @@
                     </div>
 
                     <div class="gap-3 my-4">
-                        <button class="btn btn-primary btn-lg fw-bold me-2 btn-buy">
+                        <button @click.prevent="addToCart" class="btn btn-primary btn-lg fw-bold me-2 btn-buy">
                             <i class="bi bi-cart"></i> Buy
                         </button>
                         <button @click.prevent="addToFavorites" class="btn btn-outline-primary">
@@ -93,8 +93,14 @@ export default {
             });
         },
 
+        addToCart() {
+            axios.post('/api/products/cart/add', {
+                product_id: this.product.id,
+            });
+        },
+
         addToFavorites() {
-            if (localStorage.getItem('auth')) {
+            if (localStorage.getItem('auth') == 'true') {
                 axios.post('/api/products/favorites/add', {
                 product_id: this.product.id,
             }).then((res) => {
