@@ -1,13 +1,23 @@
 <template>
-    <CardsList productsPath="cart/index"></CardsList>
+    
 </template>
 <script>
-import CardsList from '../product/CardsList.vue';
+import axios from 'axios';
+
 
 export default {
-    components: {
-        CardsList,
-    }
+    mounted() {
+        this.getCart();
+    },
+
+    methods: {
+        getCart() {
+            axios.get('/api/products/cart/index')
+                .then(res => {
+                    console.log(res);
+                })
+        }
+    },
 }
 </script>
 <style></style>

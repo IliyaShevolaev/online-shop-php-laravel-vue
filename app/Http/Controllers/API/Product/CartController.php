@@ -13,11 +13,12 @@ class CartController extends Controller
 {
     public function index()
     {
-        $cartItems = Cart::where('user_id', Auth::id())->with('product')->get();
+        $user = Auth::user();
 
+        $cartItems = $user->cart()->with('product')->get();
         $products = $cartItems->pluck('product');
 
-        return ProductResource::collection($products);
+        return response()->json($products);
     }
 
     public function add(Request $request)
