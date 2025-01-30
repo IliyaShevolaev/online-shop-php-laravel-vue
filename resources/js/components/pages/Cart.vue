@@ -5,7 +5,9 @@
 </template>
 <script>
 export default {
-    
+    mounted() {
+        console.log(JSON.parse(localStorage.getItem('cart')));
+    },
 }
 </script>
 <style>

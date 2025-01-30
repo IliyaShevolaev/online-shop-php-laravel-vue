@@ -27,7 +27,7 @@
                     </div>
 
                     <div class="gap-3 my-4">
-                        <button class="btn btn-primary btn-lg fw-bold me-2 btn-buy">
+                        <button @click.prevent="addToCart" class="btn btn-primary btn-lg fw-bold me-2 btn-buy">
                             <i class="bi bi-cart"></i> Buy
                         </button>
                         <button @click.prevent="addToFavorites" class="btn btn-outline-primary">
@@ -91,6 +91,20 @@ export default {
                 this.$store.commit('setProductsFromFilter', res.data.data);
                 this.$router.push({ name: 'product.filter' });
             });
+        },
+
+        addToCart() {
+            let userCart = JSON.parse(localStorage.getItem('cart')) || [];
+
+            if (!userCart.find(obj => obj.id === this.product.id)) {
+                userCart.push(this.product);
+                localStorage.setItem('cart', JSON.stringify(userCart));
+
+                this.notify('alert-success', 'Added to cart')
+            } else {
+                this.notify('alert-warning', 'Product is already in your cart')
+            }
+
         },
 
         addToFavorites() {

@@ -12,7 +12,7 @@
                             {{ product.price }} $
                         </p>
                         <div class="mt-auto d-flex align-items-center">
-                            <button class="btn btn-primary btn-lg fw-bold flex-grow-1 me-2" @click.stop="goToCart">
+                            <button class="btn btn-primary btn-lg fw-bold flex-grow-1 me-2" @click.stop="addToCart(product)">
                                 Buy
                             </button>
                             <button class="btn btn-outline-primary btn-icon" @click.stop="addToFavorites(product.id)">
@@ -46,14 +46,22 @@ export default {
     },
 
     methods: {
-        goToCart() {
-            console.log("cart");
-        },
         goToProduct(id) {
             this.$router.push(`/product/show/${id}`);
         },
-        addToWishlist() {
-            console.log("wishlist");
+
+        addToCart(product) {
+            let userCart = JSON.parse(localStorage.getItem('cart')) || [];
+
+            if (!userCart.find(obj => obj.id === product.id)) {
+                userCart.push(product);
+                localStorage.setItem('cart', JSON.stringify(userCart));
+
+                this.notify('alert-success', 'Added to cart')
+            } else {
+                this.notify('alert-warning', 'Product is already in your cart')
+            }
+
         },
 
         getProducts() {
