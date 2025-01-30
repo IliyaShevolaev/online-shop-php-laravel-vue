@@ -31,7 +31,7 @@
                             <i class="bi bi-cart"></i> Buy
                         </button>
                         <button @click.prevent="addToFavorites" class="btn btn-outline-primary">
-                            <i :class="product.inFavorites? 'bi bi-bookmark-fill fs-2' : 'bi bi-bookmark fs-2'"></i>
+                            <i :class="product.inFavorites ? 'bi bi-bookmark-fill fs-2' : 'bi bi-bookmark fs-2'"></i>
                         </button>
                     </div>
                 </div>
@@ -97,7 +97,10 @@ export default {
             let userCart = JSON.parse(localStorage.getItem('cart')) || [];
 
             if (!userCart.find(obj => obj.id === this.product.id)) {
-                userCart.push(this.product);
+                let itemToCart = this.product;
+                itemToCart['quantity'] = 1;
+                userCart.push(itemToCart);
+                
                 localStorage.setItem('cart', JSON.stringify(userCart));
 
                 this.notify('alert-success', 'Added to cart')
@@ -105,21 +108,23 @@ export default {
                 this.notify('alert-warning', 'Product is already in your cart')
             }
 
+            console.log(userCart);
+
         },
 
         addToFavorites() {
             if (localStorage.getItem('auth')) {
                 axios.post('/api/products/favorites/add', {
-                product_id: this.product.id,
-            }).then((res) => {
-                if (res.data.already_exists) {
-                    this.notify('alert-danger', 'Deleted from favorites');
-                } else {
-                    this.notify('alert-success', 'Added to your favorites')
-                }
+                    product_id: this.product.id,
+                }).then((res) => {
+                    if (res.data.already_exists) {
+                        this.notify('alert-danger', 'Deleted from favorites');
+                    } else {
+                        this.notify('alert-success', 'Added to your favorites')
+                    }
 
-                this.product.inFavorites = !this.product.inFavorites;
-            });
+                    this.product.inFavorites = !this.product.inFavorites;
+                });
             } else {
                 this.notify('alert-warning', 'Authorization is required')
             }

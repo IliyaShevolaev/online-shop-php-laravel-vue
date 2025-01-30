@@ -54,6 +54,7 @@ export default {
             let userCart = JSON.parse(localStorage.getItem('cart')) || [];
 
             if (!userCart.find(obj => obj.id === product.id)) {
+                product['quantity'] = 1;
                 userCart.push(product);
                 localStorage.setItem('cart', JSON.stringify(userCart));
 
