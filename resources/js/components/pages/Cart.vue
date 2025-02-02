@@ -10,7 +10,7 @@
                     <div class="card h-100 shadow-sm">
                         <div class="row g-0">
                             <div class="col-md-3">
-                                <img :src="item.image_url" class="card-img-top"/>
+                                <img :src="item.image_url" class="card-img-top" />
                             </div>
                             <div class="col-md-9">
                                 <div class="card-body d-flex flex-column">
@@ -39,13 +39,15 @@
 
             <div class="mt-4 d-flex justify-content-between">
                 <h4>Total: {{ totalPrice }} $</h4>
-                <button class="btn btn-success">Proceed to Checkout</button>
+                <button @click="makeOrder" class="btn btn-success">Proceed to Checkout</button>
             </div>
         </div>
     </div>
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
     data() {
         return {
@@ -81,6 +83,26 @@ export default {
         removeFromCart(index) {
             this.cart.splice(index, 1);
             this.updateCart();
+        },
+
+        makeOrder() {
+            let productsIdArray = [];
+            let productsQuantityArray = [];
+
+            this.cart.forEach(product => {
+                productsIdArray.push(product.id);
+                productsQuantityArray.push(product.quantity);
+            });
+
+            axios.post("/api/products/order/create", {
+                'productsIdArray': productsIdArray,
+                'productsQuantityArray': productsQuantityArray,
+            }).then(res => {
+                console.log('ordered!');
+                localStorage.setItem('cart', JSON.stringify([]));
+                this.cart = this.getCart();
+                this.updateCart();
+            });
         },
     },
     watch: {
