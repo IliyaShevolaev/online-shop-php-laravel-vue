@@ -55,7 +55,8 @@ Route::group(['prefix' => 'admin', 'middleware' => 'admin'], function () {
 
     Route::group(['prefix' => 'orders'], function () {
         Route::get('/index', [OrderController::class, 'index'])->name('orders.index');
-        
+        Route::get('/orders/filter', [OrderController::class, 'filter'])->name('orders.filter');
+        Route::post('/close/{order}', [OrderController::class, 'close'])->name('orders.close');
     });
 });
 

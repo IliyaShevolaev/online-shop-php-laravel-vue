@@ -21,6 +21,7 @@ class CreateOrderAction
             'productsId' => $orderData['productsIdArray'],
             'productsQuantity' => $orderData['productsQuantityArray'],
             'orderSum' => $orderSum,
+            'status' => false,
         ]);
     }
 }

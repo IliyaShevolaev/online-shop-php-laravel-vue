@@ -20,6 +20,7 @@ return new class extends Migration
             $table->json('productsQuantity');
 
             $table->integer('orderSum');
+            $table->boolean('status');
 
             $table->timestamps();
         });
