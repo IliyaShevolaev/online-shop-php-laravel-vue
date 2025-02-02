@@ -18,7 +18,7 @@
             </h4>
             <ul class="nav flex-column fs-5">
                 <li class="nav-item">
-                    <a class="nav-link text-white" href="#"><i class="bi bi-cart-fill"></i> Orders</a>
+                    <a class="nav-link text-white" href="{{route('orders.index')}}"><i class="bi bi-cart-fill"></i> Orders</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link text-white" href="{{ route('products.index') }}"><i class="bi bi-book-fill"></i>

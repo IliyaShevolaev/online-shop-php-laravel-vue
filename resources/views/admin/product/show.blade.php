@@ -22,7 +22,7 @@
                 @endforeach
             </p>
 
-            <a href="{{ route('products.index') }}" class="btn btn-primary mt-3">Back</a>
+            <a href="{{ url()->previous() }}" class="btn btn-primary mt-3">Back</a>
             <a href="{{ route('products.edit', $product->id) }}" class="btn btn-warning mt-3">Edit</a>
             <form action="{{ route('products.delete', $product->id) }}" method="POST" class="d-inline">
                 @csrf

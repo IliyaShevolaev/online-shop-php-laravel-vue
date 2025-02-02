@@ -13,7 +13,7 @@
             <p><strong>Gender:</strong> {{ $user->genderTitle }} </p>
             <p><strong>Address:</strong> {{ $user->address }}</p>
 
-            <a href="{{ route('users.index') }}" class="btn btn-primary mt-3">Back</a>
+            <a href="{{ url()->previous() }}" class="btn btn-primary mt-3">Back</a>
             <a href="{{ route('users.edit', $user->id) }}" class="btn btn-warning mt-3">Edit</a>
             <form action="{{ route('users.delete', $user->id) }}" method="POST" class="d-inline">
                 @csrf

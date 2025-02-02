@@ -6,6 +6,7 @@ use App\Http\Controllers\IndexController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\GenreController;
+use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\CategoryController;
 
@@ -50,6 +51,11 @@ Route::group(['prefix' => 'admin', 'middleware' => 'admin'], function () {
         Route::get('/{user}/edit', [UserController::class, 'edit'])->name('users.edit');
         Route::patch('/{user}', [UserController::class, 'update'])->name('users.update');
         Route::delete('/{user}', [UserController::class, 'delete'])->name('users.delete');
+    });
+
+    Route::group(['prefix' => 'orders'], function () {
+        Route::get('/index', [OrderController::class, 'index'])->name('orders.index');
+        
     });
 });
 
