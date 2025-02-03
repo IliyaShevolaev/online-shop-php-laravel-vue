@@ -102,3 +102,58 @@ export default {
     },
 };
 </script>
+
+<style scoped>
+.card {
+    transition: transform 0.2s;
+    height: 100%;
+}
+
+.card:hover {
+    transform: scale(1.05);
+}
+
+.card-img-top {
+    height: 200px;
+    object-fit: cover;
+}
+
+.card-title {
+    font-size: 1.1rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+}
+
+.card-text {
+    max-height: 3em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.product-price {
+    font-size: 1.0rem;
+    font-weight: 600;
+    color: #0066cc;
+}
+
+.old-price {
+    color: red;
+    text-decoration: line-through;
+    margin-right: 10px;
+}
+
+.btn-icon {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    font-size: 1.2rem;
+}
+
+.btn-icon i {
+    font-size: 1.2rem;
+}
+</style>

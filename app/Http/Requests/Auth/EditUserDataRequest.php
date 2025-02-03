@@ -22,6 +22,8 @@ class EditUserDataRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'name' => 'nullable|string',
+            'surname' => 'nullable|string',
             'gender' => 'nullable|integer',
             'age' => 'nullable|integer',
             'address' => 'nullable|string',

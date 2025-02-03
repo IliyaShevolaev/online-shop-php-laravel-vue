@@ -110,7 +110,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .card {
     transition: transform 0.2s;
     height: 100%;

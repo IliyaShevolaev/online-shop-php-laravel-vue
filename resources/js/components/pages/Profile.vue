@@ -1,85 +1,81 @@
 <template>
+    <div v-if="user" class="container mt-5">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card shadow-sm text-center p-4">
+                    <!-- <img :src="user.avatar || '/default-avatar.png'" class="rounded-circle avatar-img" alt="Avatar"> -->
+                    <h4>{{ userProfileView.name }}</h4>
+                    <h4>{{ userProfileView.surname }}</h4>
+                    <p class="text-muted">{{ userProfileView.email }}</p>
+                    <button class="btn btn-outline-primary w-100" @click="goToOrders">
+                        <i class="bi bi-box-seam"></i> My Orders
+                    </button>
+                </div>
+            </div>
 
-    <div  class="profile-container d-flex flex-column align-items-center text-center mt-5">
-
-        <div v-if="user" class="user-info mt-5">
-            <h1 class="mb-4">Welcome, {{ user.name }} {{ user.surname }}!</h1>
-            <div class="info-card shadow-sm p-4 mb-4 bg-white rounded">
-                <p><strong>Email:</strong> {{ user.email }}</p>
-
-                <p><strong>Gender: </strong>
-                    <template v-if="editorMode">
-                        <select name="gender" v-model="this.newUserData.gender" class="form-control" id="gender">
-                            <option value="1">Male</option>
-                            <option value="2">Female</option>
-                            <option value="3">Not specified</option>
-                        </select>
-                    </template>
-                    <template v-else>
-                    <span :class="{ 'text-danger': !user.gender }">
-                        {{ getGenderTitle(user.gender) || 'Not specified' }}</span>
-                    </template>
-                </p>
-
-                <p><strong>Age: </strong>
-                    <template v-if="editorMode">
-                        <input type="number" v-model="this.newUserData.age" name="age" id="age" placeholder="Enter age...">
-                    </template>
-                    <template v-else>
-                    <span :class="{ 'text-danger': !user.age }">
-                        {{ user.age || 'Not specified' }}</span>
-                    </template>
-                </p>
-
-                <p><strong>Address: </strong>
-                    <template v-if="editorMode">
-                        <input type="text" name="address" v-model="this.newUserData.address" id="address" placeholder="Enter address...">
-                    </template>
-                    <template v-else>
-                    <span :class="{ 'text-danger': !user.address }">
-                        {{ user.address || 'Not specified' }}</span>
-                    </template>
-                </p>
-
-                <template v-if="editorMode">
-                    <div>
-                        <button @click.prevent="editData" class="btn btn-primary">Submit</button>
+            <div class="col-md-8">
+                <div class="card shadow-sm p-4">
+                    <h5 class="mb-3">Profile Information</h5>
+                    <div class="mb-3">
+                        <label class="form-label">Email</label>
+                        <input v-model="user.email" type="email" class="form-control" disabled />
                     </div>
-                </template>
+                    <div class="mb-3">
+                        <label class="form-label">Name</label>
+                        <input v-model="user.name" type="text" class="form-control" />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Surname</label>
+                        <input v-model="user.surname" type="text" class="form-control" />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Address</label>
+                        <input v-model="user.address" type="text" class="form-control" />
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label class="form-label">Gender</label>
+                            <select v-model="user.gender" class="form-select">
+                                <option value="1">Male</option>
+                                <option value="2">Female</option>
+                                <option value="3">Not specified</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Age</label>
+                            <input v-model="user.age" type="number" class="form-control" min="0" max="120" />
+                        </div>
+                    </div>
 
+                    <button @click.prevent="editData" type="button" class="btn btn-primary w-100 fw-bold mt-3">Save Changes</button>
+                </div>
             </div>
-            <button class="btn btn-primary mt-3" @click.prevent="changeEditorMode">Edit Details</button>
         </div>
-
-        <div v-else>
-            <div class="spinner-border text-primary" role="status">
-                <span class="visually-hidden">Loading...</span>
-            </div>
-        </div>
-
-        <div v-if="profileInfoCheck" class="alert alert-warning mt-4 fs-3" >
-            Please enter all data for ordering
-        </div>
-
-        <button class="btn btn-danger mt-4" @click="logout">Log out</button>
     </div>
+
+    <div v-else>
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
+
+    <Notification ref="notification"></Notification>
 </template>
 
 <script>
 import axios from "axios";
+import Notification from "../ui_elements/Notification.vue";
 
 export default {
     data() {
         return {
             user: null,
-            editorMode: false,
-
-            newUserData: {
-                gender: null,
-                address: null,
-                age: null,
-            }
+            userProfileView: null,
         };
+    },
+
+    components: {
+        Notification
     },
 
     mounted() {
@@ -94,40 +90,34 @@ export default {
 
     methods: {
         getUserInfo() {
-            axios
-                .get("/api/profile/")
+            axios.get("/api/profile/")
                 .then((res) => {
                     this.user = res.data.data;
-                    this.newUserData = res.data.data;
-                })
-                .catch((error) => {
-                    console.error("Error loading user data:", error);
+                    this.userProfileView = JSON.parse(JSON.stringify(this.user));
                 });
         },
-
-        changeEditorMode() {
-            this.editorMode = !this.editorMode;
-        },
-
+        
         editData() {
             axios.post('/api/profile/edit', {
-                gender: this.newUserData.gender,
-                age: this.newUserData.age,
-                address: this.newUserData.address,
+                name: this.user.name,
+                surname: this.user.surname,
+                gender: this.user.gender,
+                age: this.user.age,
+                address: this.user.address,
             }).then(res => {
-                this.editorMode = false;
                 this.getUserInfo();
+                this.notify('alert-success', 'New profile info saved');
             })
         },
 
         getGenderTitle(gender) {
             if (gender === 1) {
                 return 'Male';
-            } 
+            }
 
             if (gender === 2) {
                 return 'Female';
-            } 
+            }
 
             return 'Not specified';
         },
@@ -138,54 +128,41 @@ export default {
                 this.$router.push({ name: "page.main" });
             });
         },
+
+        notify(type, message) {
+            this.$refs.notification.showNotification(type, message);
+        },
     },
 };
 </script>
 
 <style scoped>
-.profile-container {
-    height: auto;
-    background-color: #f0f8ff;
-    padding: 20px;
+.avatar-img {
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    border: 4px solid #0d6efd;
 }
 
-.user-info {
-    font-size: 1.2rem;
-    max-width: 600px;
-    width: 100%;
-    background: linear-gradient(145deg, #2b91f7, #02478c);
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), inset 0 -1px 4px rgba(255, 255, 255, 0.5);
-    border-radius: 15px;
-    padding: 20px;
+.card {
+    border-radius: 12px;
 }
 
-.info-card {
-    background-color: #ffffff;
-    border-radius: 10px;
-    font-size: 1rem;
+.btn-primary {
+    background-color: #0d6efd;
+    border-color: #0d6efd;
 }
 
-button {
-    font-size: 1rem;
-    padding: 10px 20px;
-    transition: all 0.3s ease;
+.btn-primary:hover {
+    background-color: #0b5ed7;
 }
 
-button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+.btn-outline-primary {
+    border-color: #0d6efd;
 }
 
-.alert {
-    font-size: 1rem;
-    color: #856404;
-    background-color: #fff3cd;
-    border: 1px solid #ffeeba;
-    border-radius: 5px;
-}
-
-.spinner-border {
-    width: 3rem;
-    height: 3rem;
+.btn-outline-primary:hover {
+    background-color: #0d6efd;
+    color: white;
 }
 </style>
