@@ -43,10 +43,13 @@
             </div>
         </div>
     </div>
+
+    <Notification ref="notification"></Notification>
 </template>
 
 <script>
 import axios from 'axios';
+import Notification from '../ui_elements/Notification.vue';
 
 export default {
     data() {
@@ -54,11 +57,17 @@ export default {
             cart: this.getCart(),
         };
     },
+
+    components: {
+        Notification
+    },
+
     computed: {
         totalPrice() {
             return this.cart.reduce((total, item) => total + item.price * item.quantity, 0).toFixed(2);
         },
     },
+
     methods: {
         getCart() {
             return JSON.parse(localStorage.getItem("cart")) || [];
@@ -86,25 +95,34 @@ export default {
         },
 
         makeOrder() {
-            let productsIdArray = [];
-            let productsQuantityArray = [];
+            if (localStorage.getItem('auth')) {
+                let productsIdArray = [];
+                let productsQuantityArray = [];
 
-            this.cart.forEach(product => {
-                productsIdArray.push(product.id);
-                productsQuantityArray.push(product.quantity);
-            });
+                this.cart.forEach(product => {
+                    productsIdArray.push(product.id);
+                    productsQuantityArray.push(product.quantity);
+                });
 
-            axios.post("/api/products/order/create", {
-                'productsIdArray': productsIdArray,
-                'productsQuantityArray': productsQuantityArray,
-            }).then(res => {
-                console.log('ordered!');
-                localStorage.setItem('cart', JSON.stringify([]));
-                this.cart = this.getCart();
-                this.updateCart();
-            });
+                axios.post("/api/products/order/create", {
+                    'productsIdArray': productsIdArray,
+                    'productsQuantityArray': productsQuantityArray,
+                }).then(res => {
+                    console.log('ordered!');
+                    localStorage.setItem('cart', JSON.stringify([]));
+                    this.cart = this.getCart();
+                    this.updateCart();
+                });
+            } else {
+                this.notify('alert-warning', 'Authorization is required')
+            }
+        },
+
+        notify(type, message) {
+            this.$refs.notification.showNotification(type, message);
         },
     },
+
     watch: {
         cart: {
             handler() {
