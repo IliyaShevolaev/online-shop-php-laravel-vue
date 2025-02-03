@@ -59,7 +59,7 @@ export default {
     },
 
     components: {
-        Notification
+        Notification,
     },
 
     computed: {
@@ -96,26 +96,34 @@ export default {
 
         makeOrder() {
             if (localStorage.getItem('auth')) {
-                let productsIdArray = [];
-                let productsQuantityArray = [];
+                axios.get('/api/profile').then(res => {
+                    let user = res.data.data;
+                    if (user.address !== null && user.age !== null) {
+                        let productsIdArray = [];
+                        let productsQuantityArray = [];
 
-                this.cart.forEach(product => {
-                    productsIdArray.push(product.id);
-                    productsQuantityArray.push(product.quantity);
-                });
+                        this.cart.forEach(product => {
+                            productsIdArray.push(product.id);
+                            productsQuantityArray.push(product.quantity);
+                        });
 
-                axios.post("/api/products/order/create", {
-                    'productsIdArray': productsIdArray,
-                    'productsQuantityArray': productsQuantityArray,
-                }).then(res => {
-                    console.log('ordered!');
-                    localStorage.setItem('cart', JSON.stringify([]));
-                    this.cart = this.getCart();
-                    this.updateCart();
-                });
+                        axios.post("/api/products/order/create", {
+                            'productsIdArray': productsIdArray,
+                            'productsQuantityArray': productsQuantityArray,
+                        }).then(res => {
+                            localStorage.setItem('cart', JSON.stringify([]));
+                            this.cart = this.getCart();
+                            this.updateCart();
+                        });
+
+                    } else {
+                        this.notify('alert-warning', 'Fill profile first');
+                    }
+                })
             } else {
-                this.notify('alert-warning', 'Authorization is required')
+                this.notify('alert-warning', 'Authorization is required');
             }
+
         },
 
         notify(type, message) {

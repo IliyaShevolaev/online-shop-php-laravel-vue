@@ -7,9 +7,10 @@
                     <h4>{{ userProfileView.name }}</h4>
                     <h4>{{ userProfileView.surname }}</h4>
                     <p class="text-muted">{{ userProfileView.email }}</p>
-                    <button class="btn btn-outline-primary w-100" @click="goToOrders">
-                        <i class="bi bi-box-seam"></i> My Orders
-                    </button>
+                    <button class="btn btn-outline-primary w-100" @click.prevent="goToOrders">
+                        <i class="bi bi-box-seam"></i> My Orders </button>
+                    <button class="btn btn-outline-danger w-100 mt-2" @click.prevent="logout">
+                        <i class="bi bi-box-arrow-in-right"></i> Log out </button>
                 </div>
             </div>
 
@@ -47,7 +48,13 @@
                         </div>
                     </div>
 
-                    <button @click.prevent="editData" type="button" class="btn btn-primary w-100 fw-bold mt-3">Save Changes</button>
+                    <div v-if="profileInfoCheck" class="alert alert-warning mt-3 d-flex align-items-center">
+                        <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                        <div>Please fill in all your profile information.</div>
+                    </div>
+
+                    <button @click.prevent="editData" type="button" class="btn btn-primary w-100 fw-bold mt-3">Save
+                        Changes</button>
                 </div>
             </div>
         </div>
@@ -71,6 +78,8 @@ export default {
         return {
             user: null,
             userProfileView: null,
+
+            fullProfile: true,
         };
     },
 
@@ -96,7 +105,7 @@ export default {
                     this.userProfileView = JSON.parse(JSON.stringify(this.user));
                 });
         },
-        
+
         editData() {
             axios.post('/api/profile/edit', {
                 name: this.user.name,
