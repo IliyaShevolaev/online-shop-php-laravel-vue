@@ -8,7 +8,7 @@
         </div>
 
         <div class="row gy-4">
-            <div v-for="product in order.products" :key="product.id" class="col-md-3">
+            <div v-for="(product, index) in order.products" :key="product.id" class="col-md-3">
                 <div class="card h-100 shadow-sm" @click="goToProduct(product.id)">
                     <img :src="product.image_url" class="card-img-top" alt="Product Image" />
                     <div class="card-body d-flex flex-column">
@@ -16,7 +16,7 @@
                         <p class="card-text text-muted">{{ product.description }}</p>
                         <p class="product-price">
                             <span v-if="product.old_price" class="old-price">{{ product.old_price }} $</span>
-                            {{ product.price }} $
+                            {{ product.price }}$ X {{ this.order.productsQuantity[index] }} = {{ product.price * this.order.productsQuantity[index] }}
                         </p>
                     </div>
                 </div>
@@ -49,6 +49,7 @@ export default {
             axios.get(`/api/orders/show/${this.id}`)
                 .then(res => {
                     this.order = res.data.data;
+                    console.log(res);
                 });
         },
 

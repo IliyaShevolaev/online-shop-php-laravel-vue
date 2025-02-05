@@ -70,7 +70,9 @@ export default {
 
     methods: {
         getCart() {
-            return JSON.parse(localStorage.getItem("cart")) || [];
+            let cart = JSON.parse(localStorage.getItem("cart")) || [];
+            cart.sort((a, b) => a.id - b.id); 
+            return cart;
         },
 
         updateCart() {
@@ -95,6 +97,7 @@ export default {
         },
 
         makeOrder() {
+            console.log(this.cart);
             if (localStorage.getItem('auth')) {
                 axios.get('/api/profile').then(res => {
                     let user = res.data.data;
