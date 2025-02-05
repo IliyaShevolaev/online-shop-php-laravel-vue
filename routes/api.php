@@ -34,6 +34,6 @@ Route::group(['prefix' => 'profile'], function() {
 
 Route::group(['prefix' => 'orders'], function() {
     Route::get('/index', [OrderController::class, 'index']);
+    Route::get('/show/{order}', [OrderController::class, 'show']);
     Route::post('/create', [OrderController::class, 'create']);
-
 });

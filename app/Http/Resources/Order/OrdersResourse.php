@@ -2,18 +2,13 @@
 
 namespace App\Http\Resources\Order;
 
+use App\Http\Resources\Product\ProductResource;
 use App\Models\Product;
 use Illuminate\Http\Request;
-use App\Http\Resources\Product\ProductResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class OrderResourse extends JsonResource
+class OrdersResourse extends JsonResource
 {
-    private function getUserProducts(array $productsId) 
-    {
-        return Product::whereIn('id', $productsId)->get();
-    }
-
     /**
      * Transform the resource into an array.
      *
@@ -25,7 +20,6 @@ class OrderResourse extends JsonResource
             'id' => $this->id,
             'orderSum' => $this->orderSum,
             'status' => $this->status,
-            'products' => ProductResource::collection($this->getUserProducts($this->productsId)),
             'productsQuantity' => $this->productsQuantity,
         ];
     }
