@@ -25,10 +25,15 @@ Route::group(['prefix' => 'products'], function() {
     Route::get('/favorites/index', [FavoriteController::class, 'index']);
     Route::post('/favorites/add', [FavoriteController::class, 'create']);
 
-    Route::post('/order/create', [OrderController::class, 'create']);
 });
 
 Route::group(['prefix' => 'profile'], function() {
     Route::get('/', [ProfileController::class, 'index']);
     Route::post('/edit', [ProfileController::class, 'edit']);
+});
+
+Route::group(['prefix' => 'orders'], function() {
+    Route::get('/index', [OrderController::class, 'index']);
+    Route::post('/create', [OrderController::class, 'create']);
+
 });

@@ -26,6 +26,13 @@ const routes = [
     },
 
     {
+        path: '/profile/orders',
+        name: 'page.profile.orders',
+        meta: { requiresAuth: true },
+        component: () => import('../components/pages/Orders.vue'),
+    },
+
+    {
         path: '/product/show/:id',
         name: 'product.show',
         props: true,

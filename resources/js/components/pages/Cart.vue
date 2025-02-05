@@ -107,7 +107,7 @@ export default {
                             productsQuantityArray.push(product.quantity);
                         });
 
-                        axios.post("/api/products/order/create", {
+                        axios.post("/api/orders/create", {
                             'productsIdArray': productsIdArray,
                             'productsQuantityArray': productsQuantityArray,
                         }).then(res => {

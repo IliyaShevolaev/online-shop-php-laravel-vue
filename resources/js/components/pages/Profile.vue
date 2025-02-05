@@ -7,8 +7,9 @@
                     <h4>{{ userProfileView.name }}</h4>
                     <h4>{{ userProfileView.surname }}</h4>
                     <p class="text-muted">{{ userProfileView.email }}</p>
-                    <button class="btn btn-outline-primary w-100" @click.prevent="goToOrders">
-                        <i class="bi bi-box-seam"></i> My Orders </button>
+                    <router-link class="btn btn-outline-primary w-100" to="/profile/orders">
+                        <i class="bi bi-box-seam"></i> My Orders
+                    </router-link>
                     <button class="btn btn-outline-danger w-100 mt-2" @click.prevent="logout">
                         <i class="bi bi-box-arrow-in-right"></i> Log out </button>
                 </div>
