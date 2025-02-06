@@ -34,6 +34,10 @@
                         </div>
                     </div>
 
+                    <div v-if="showDataError" class="alert alert-danger text-center">
+                        Incorrect login or password
+                    </div>
+
                     <div v-if="registerMode" class="form-group mb-3 position-relative">
                         <label for="password_confirm" class="form-label">Password</label>
                         <div class="input-wrapper">
@@ -69,6 +73,7 @@ export default {
             changeButtonText: 'Register',
 
             hidePassword: true,
+            showDataError: false,
 
             name: '',
             surname: '',
@@ -129,6 +134,11 @@ export default {
                         localStorage.setItem('auth', 'true');
                         this.closeModal();
                         this.$router.push({ name: 'page.profile' });
+                    })
+                    .catch(error => {
+                        if (error.status === 422) {
+                            this.showDataError = true;
+                        }
                     });
             });
         },
